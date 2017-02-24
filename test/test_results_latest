@@ -1,0 +1,122 @@
+{'TYPE': 'who', 'INPUT_TEXT': 'who is playing foot ball', 'PERSON': [], 'SUBJECT': ['foot ball'], 'DATE': [], 'ACTION': ['playing']}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is playing foot ball this weekend', 'PERSON': [], 'SUBJECT': ['foot ball'], 'DATE': ['this weekend'], 'ACTION': ['playing']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting events are happening today', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['today'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting events is happening next week', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['next week'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting events are happening next month', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['next month'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting events are happening next year', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['next year'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting events were happening last week', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['last week'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting events were happening last month', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['last month'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting events were happening last year', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['last year'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what assignments are due next week', 'PERSON': [], 'SUBJECT': ['assignments'], 'DATE': ['next week'], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what asu events are happening now', 'PERSON': [], 'SUBJECT': ['asu events'], 'DATE': ['now'], 'ACTION': ['happening']}
+{'TYPE': 'when', 'INPUT_TEXT': 'when is the next sporting event', 'PERSON': [], 'SUBJECT': ['sporting event'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'direction', 'LOCATION': ['noob hall'], 'INPUT_TEXT': 'show me direction to noob hall', 'SUBJECT': ['noob hall']}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is playing in the next sporting event', 'PERSON': [], 'SUBJECT': ['sporting event'], 'DATE': [], 'ACTION': ['playing']}
+{'TYPE': 'other', 'INPUT_TEXT': 'are there any sporting events happening soon', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['soon'], 'ACTION': ['happening']}
+{'TYPE': 'other', 'INPUT_TEXT': 'are there any assignments due next week', 'PERSON': [], 'SUBJECT': ['assignments'], 'DATE': ['next week'], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sporting event was last week', 'PERSON': [], 'SUBJECT': ['sporting event'], 'DATE': ['last week'], 'ACTION': []}
+{'TYPE': 'boolean', 'INPUT_TEXT': 'will there be any sporting events happening soon', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['soon'], 'ACTION': ['happening']}
+{'TYPE': 'quantity', 'INPUT_TEXT': 'how many sporting events are happening next week', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': ['next week'], 'ACTION': ['happening']}
+{'TYPE': 'boolean', 'INPUT_TEXT': 'will there be any sporting events', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'other', 'INPUT_TEXT': 'find a sporting event which i might like', 'PERSON': [], 'SUBJECT': ['sporting event'], 'DATE': [], 'ACTION': ['find', 'like']}
+{'TYPE': 'boolean', 'INPUT_TEXT': 'can i sign up for any sporting events', 'PERSON': [], 'SUBJECT': ['sporting events'], 'DATE': [], 'ACTION': ['sign']}
+{'TYPE': 'who', 'INPUT_TEXT': 'who are you', 'PERSON': [], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who are playing sports events', 'PERSON': [], 'SUBJECT': ['sports events'], 'DATE': [], 'ACTION': ['playing']}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is kyle squires', 'PERSON': ['kyle squires'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is morgan olsen', 'PERSON': ['morgan olsen'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who were the hohokam', 'PERSON': [], 'SUBJECT': ['hohokam'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is jeffrey goss', 'PERSON': ['jeffrey goss'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is gordon wishon', 'PERSON': ['gordon wishon'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is phil regier', 'PERSON': ['phil regier'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is mark searle', 'PERSON': ['mark searle'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is the provost', 'PERSON': [], 'SUBJECT': ['provost'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is ray anderson', 'PERSON': ['ray anderson'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is the ad', 'PERSON': [], 'SUBJECT': ['ad'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is jim o brien', 'PERSON': ['jim o brien'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is paul jarman', 'PERSON': ['paul jarman'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is dan dillon', 'PERSON': ['dan dillon'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is james rund', 'PERSON': ['james rund'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is jose cardenas', 'PERSON': ['jose cardenas'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is kevin salcido', 'PERSON': ['kevin salcido'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is bret hovell', 'PERSON': ['bret hovell'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is christine wilkinson', 'PERSON': ['christine wilkinson'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is keith walton', 'PERSON': ['keith walton'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is rich stanley', 'PERSON': ['rich stanley'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is stefanie lindquist', 'PERSON': ['stefanie lindquist'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is mark jacobs', 'PERSON': ['mark jacobs'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is amy hillman', 'PERSON': ['amy hillman'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is steven tepper', 'PERSON': ['steven tepper'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is david guston', 'PERSON': ['david guston'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is alfredo artiles', 'PERSON': ['alfredo artiles'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is keith lindor', 'PERSON': ['keith lindor'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is george justice', 'PERSON': ['george justice'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is duane roen', 'PERSON': ['duane roen'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is christopher callahan', 'PERSON': ['christopher callahan'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is douglas sylvester', 'PERSON': ['douglas sylvester'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is patrick kenney', 'PERSON': ['patrick kenney'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is ferran garcia pichel', 'PERSON': ['ferran garcia pichel'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is marlene tromp', 'PERSON': ['marlene tromp'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is teri pipe', 'PERSON': ['teri pipe'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is jonathan koppell', 'PERSON': ['jonathan koppell'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is elizabeth wentz', 'PERSON': ['elizabeth wentz'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is christopher boone', 'PERSON': ['christopher boone'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is carole basile', 'PERSON': ['carole basile'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is allen morrison', 'PERSON': ['allen morrison'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is john rome', 'PERSON': ['john rome'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is colleen jennings roggensack', 'PERSON': ['colleen jennings roggensack'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is rocky harris', 'PERSON': ['rocky harris'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is morgan reed', 'PERSON': ['morgan reed'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is octavio heredia', 'PERSON': ['octavio heredia'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who are you', 'PERSON': [], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is sparky', 'PERSON': ['sparky'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is panch', 'PERSON': [], 'SUBJECT': ['panch'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is pat tillman', 'PERSON': ['pat tillman'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who was mary lou fulton', 'PERSON': ['mary lou fulton'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is ira fulton', 'PERSON': ['ira fulton'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is dr. michael crow', 'PERSON': ['michael crow'], 'SUBJECT': ['dr.'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is kyle squires', 'PERSON': ['kyle squires'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is morgan olsen', 'PERSON': ['morgan olsen'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who were the hohokam', 'PERSON': [], 'SUBJECT': ['hohokam'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'who', 'INPUT_TEXT': 'who is jeffrey goss', 'PERSON': ['jeffrey goss'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what sports events are happening next week', 'PERSON': [], 'SUBJECT': ['sports events'], 'DATE': ['next week'], 'ACTION': ['happening']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is a master learner', 'PERSON': [], 'SUBJECT': ['master learner'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what are the top five states for online enrollment', 'PERSON': [], 'SUBJECT': ['five states', 'enrollment'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is a sun devil', 'PERSON': ['sun devil'], 'SUBJECT': [], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is asus nickname', 'PERSON': [], 'SUBJECT': ['asus nickname'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the lantern walk', 'PERSON': [], 'SUBJECT': ['lantern walk'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what year was asu founded', 'PERSON': [], 'SUBJECT': ['year', 'asu'], 'DATE': [], 'ACTION': ['founded']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what other mascots has asu had', 'PERSON': [], 'SUBJECT': ['mascots', 'asu'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what famous architect designed gammage auditorium', 'PERSON': [], 'SUBJECT': ['architect', 'gammage auditorium'], 'DATE': [], 'ACTION': ['designed']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what makes asu great', 'PERSON': ['asu great'], 'SUBJECT': [], 'DATE': [], 'ACTION': ['makes']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what are asu colors', 'PERSON': [], 'SUBJECT': ['asu colors'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what was the catch', 'PERSON': [], 'SUBJECT': ['catch'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the curtain of distraction', 'PERSON': [], 'SUBJECT': ['curtain', 'distraction'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is asu student newspaper', 'PERSON': [], 'SUBJECT': ['asu student newspaper'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what percentage of asu students are first generation students', 'PERSON': [], 'SUBJECT': ['percentage', 'asu students', 'generation students'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the oldest trophy in ncaa history', 'PERSON': [], 'SUBJECT': ['trophy', 'ncaa history'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the seating capacity of sun devil stadium', 'PERSON': [], 'SUBJECT': ['seating capacity', 'sun devil stadium'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is a mountain', 'PERSON': [], 'SUBJECT': ['mountain'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is workday', 'PERSON': [], 'SUBJECT': ['workday'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is peoplesoft', 'PERSON': [], 'SUBJECT': ['peoplesoft'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the current budget of asu', 'PERSON': [], 'SUBJECT': ['budget', 'asu'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what percentage of the budget comes from the state of arizona', 'PERSON': [], 'SUBJECT': ['percentage', 'budget', 'state', 'arizona'], 'DATE': [], 'ACTION': ['comes']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the next show at gammage with available seats and how much do they cost', 'PERSON': [], 'SUBJECT': ['show', 'gammage', 'seats'], 'DATE': [], 'ACTION': ['cost']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what other names has asu had', 'PERSON': [], 'SUBJECT': ['names', 'asu'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what influencial leader visited asu in 1987', 'PERSON': [], 'SUBJECT': ['leader', 'asu'], 'DATE': ['1987'], 'ACTION': ['visited']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the asu charter', 'PERSON': [], 'SUBJECT': ['asu charter'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what asu facility currently occupies the site of the asu football stadium that was replaced by sun devil stadium', 'PERSON': [], 'SUBJECT': ['asu facility', 'site', 'asu football stadium', 'sun devil stadium'], 'DATE': [], 'ACTION': ['occupies', 'replaced']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is cidse', 'PERSON': [], 'SUBJECT': ['cidse'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is semte', 'PERSON': [], 'SUBJECT': ['semte'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is sbhse', 'PERSON': [], 'SUBJECT': ['sbhse'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is ecee', 'PERSON': [], 'SUBJECT': ['ecee'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is tps', 'PERSON': [], 'SUBJECT': ['tps'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is sebe', 'PERSON': [], 'SUBJECT': ['sebe'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is epics', 'PERSON': [], 'SUBJECT': ['epics'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the academic bowl', 'PERSON': [], 'SUBJECT': ['bowl'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is furi', 'PERSON': [], 'SUBJECT': ['furi'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is asu doing about sustainability', 'PERSON': [], 'SUBJECT': ['asu', 'sustainability'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is gfa', 'PERSON': [], 'SUBJECT': ['gfa'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is skysong', 'PERSON': [], 'SUBJECT': ['skysong'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what does iot mean', 'PERSON': [], 'SUBJECT': ['iot'], 'DATE': [], 'ACTION': ['mean']}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is intel', 'PERSON': [], 'SUBJECT': ['intel'], 'DATE': [], 'ACTION': []}
+{'TYPE': 'what', 'INPUT_TEXT': 'what is the new american university', 'PERSON': [], 'SUBJECT': ['american university'], 'DATE': [], 'ACTION': []}

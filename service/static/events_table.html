@@ -1,0 +1,25 @@
+<table id="myTable" class="display table" width="100%" height="100%">
+    <thead>
+    <tr>
+        <th>title</th>
+        <th>Event Start time</th>
+        <th>Event End time</th>
+        <th>Event url</th>
+        <th>Event image</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#hits}}
+    {{#source}}
+    <tr>
+        <td>{{title}}</td>
+        <td>{{event_start_date}}</td>
+        <td>{{event_end_date}}</td>
+        <td>{{event_url}}</td>
+        <td><img src="{{event_image_url}}" alt="{{event_image_alt}}" style="height: 100px;width: 100px;"> </td>
+    </tr>
+    {{/source}}
+    {{/hits}}
+    </tbody>
+</table>
+<p>harixh</p>

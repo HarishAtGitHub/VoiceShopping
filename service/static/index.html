@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Scroll Shrink</title>
+    <link rel='stylesheet prefetch'
+          href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.5.0/angular-material.css'>
+    <link rel='stylesheet prefetch'
+          href='https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+.modal-dialog {
+  width: 80%;
+  height: 100%;
+}
+
+.modal-content {
+  height: auto;
+  min-height: 80%;
+  border-radius: 0;
+}
+
+    </style>
+</head>
+<body>
+<div ng-controller="AppCtrl" layout="column" ng-cloak="" class="toolbardemoScrollShrink" ng-app="MyApp">
+    <md-toolbar ng-controller="TitleController">
+        <div class="md-toolbar-tools">
+            <h3>
+                <span>{{title}}</span>
+            </h3>
+        </div>
+    </md-toolbar>
+    <div flex layout="column" ng-view flex layout-fill style="height: 100%">
+        <md-content flex md-theme="input" layout="column" layout-padding>
+            <md-input-container style="padding-bottom: 0; margin-bottom: 0">
+                <md-icon class="material-icons">&#xE8B6;</md-icon>
+                <input id="search" value="{{searchtext}}">
+            </md-input-container>
+            <div class="padded" md-whiteframe="24" flex="100" flex-gt-sm="50" layout="column"
+                 layout-align="center center">
+                <span ng-non-bindable="">Analyser</span>
+                <span id="result"></span>
+                <span></span>
+            </div>
+            <textarea style="width:50%;height:440px;margin-left: 350px">
+            </textarea>
+        </md-content>
+    </div>
+
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search results</h4>
+            </div>
+            <div class="modal-body" id="searchresult">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--
+   Copyright 2016 Google Inc. All Rights Reserved.
+   Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at http://material.angularjs.org/license.
+   -->
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js'></script>
+<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
+<script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc.5/angular-material.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
