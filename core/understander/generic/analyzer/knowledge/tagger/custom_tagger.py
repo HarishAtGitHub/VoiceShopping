@@ -3,6 +3,13 @@ class CustomTagger:
         self.lemmatized_tokens = lemmatized_tokens
         self.unlemmatized_tokens = unlemmatized_tokens
         self.pos_tagged_tokens = pos_tagged_tokens
+        import os
+        dirname, _ = os.path.split(os.path.abspath(__file__))
+        # TODO: put file locations in a common file
+        currency_file = dirname + '/../../../../../../data/extract/currency.ser'
+        with open(currency_file, 'rb') as storage_file:
+            import pickle
+            self.currency_extract = pickle.load(storage_file)
         self.stanford_ner = stanford_ner
         self.spacy_ner = spacy_ner
         self.NOUN_TAGS = set(['NNS', 'NN', 'NNP', 'NNPS'])
@@ -68,7 +75,8 @@ class CustomTagger:
             if ((token[1] in self.NOUN_TAGS or token[1] in NUMBER_TAGS)
                 and not self.is_in_names(token[0])
                 and not self.is_in_dates(token[0])
-                and not self.is_in_nums(token[0])):
+                and not self.is_in_nums(token[0])
+                and not self.is_in_currencies(token[0])):
                 if nouns:
                     if start:
                         nouns[len(nouns) - 1] = nouns[len(nouns) - 1] + ' ' + token[0]
@@ -90,8 +98,12 @@ class CustomTagger:
         self.nouns = nouns # for it to be used in other places
         return nouns
 
-    def tag_currency_unit(self):
-        pass
+    def tag_currency(self):
+        self.currencies = []
+        for token in self.unlemmatized_tokens:
+            if token in self.currency_extract:
+                self.currencies.append(token)
+        return self.currencies
 
     def tag_date(self):
         doc = self.spacy_ner(' '.join(self.unlemmatized_tokens))
@@ -159,6 +171,13 @@ class CustomTagger:
         #return segment in self.dates
         for noun in self.nouns:
             if segment in noun.split(' '):
+                return True
+
+
+    def is_in_currencies(self, segment):
+        # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
+        for currency in self.currencies:
+            if segment in currency.split(' '):
                 return True
 
     def tag_type(self):

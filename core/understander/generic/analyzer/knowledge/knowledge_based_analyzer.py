@@ -96,6 +96,7 @@ class KnowledgeBasedAnalyzer:
         self.tagged_output['TYPE'] = tagger.tag_type()
         self.tagged_output['DATE'] = tagger.tag_date()
         self.tagged_output['NUMBER'] = tagger.tag_numbers()
+        self.tagged_output['CURRENCY'] = tagger.tag_currency()
         self.tagged_output['SUBJECT'] = tagger.tag_subject()
         self.tagged_output['ACTION'] = tagger.tag_action()
         return self
