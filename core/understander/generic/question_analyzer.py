@@ -14,6 +14,7 @@ class Analyzer:
         self.categorize()
 
         # handle based on the category
+        '''
         if(self.question_processed_form['category'] == 'other'):
             result = self.grammar_analyzer.analyze(self.question.question_extract)
             if result['SUBJECT'] == 'NOT FOUND':
@@ -22,6 +23,8 @@ class Analyzer:
                 return result
         else:
             return self.knowledge_analyzer.analyze(self.question.question_extract)
+        '''
+        return self.knowledge_analyzer.analyze(self.question.question_extract)
 
     def categorize(self):
         import re

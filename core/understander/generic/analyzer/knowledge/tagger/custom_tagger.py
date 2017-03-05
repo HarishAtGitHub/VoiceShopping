@@ -29,6 +29,31 @@ class CustomTagger:
         self.persons = persons # for it to be used in other places
         return persons
 
+    def tag_numbers(self):
+        pos_tagged_tokens = self.pos_tagged_tokens
+        nums = list()
+        start = False
+        NUMBER_TAGS = set(['CD'])
+
+        for index, token in enumerate(pos_tagged_tokens):
+            if ((token[1] in NUMBER_TAGS)
+                and not self.is_in_dates(token[0])):
+                if nums:
+                    if start:
+                        nums[len(nums) - 1] = nums[len(nums) - 1] + ' ' + token[0]
+                        if self.is_in_dates(nums[len(nums) - 1]):
+                            nums.pop()
+                    else:
+                        start = True
+                        nums.append(token[0])
+                else:
+                    start = True
+                    nums.append(token[0])
+            else:
+                start = False
+        self.nums = nums  # for it to be used in other places
+        return nums
+
     def tag_subject(self, tokens = None):
         # fix to have persons at different locations
         #ner_tagged_tokens = self.stanford_ner.tag(tokens if tokens else self.tokens)
@@ -42,7 +67,8 @@ class CustomTagger:
         for index, token in enumerate(pos_tagged_tokens):
             if ((token[1] in self.NOUN_TAGS or token[1] in NUMBER_TAGS)
                 and not self.is_in_names(token[0])
-                and not self.is_in_dates(token[0])):
+                and not self.is_in_dates(token[0])
+                and not self.is_in_nums(token[0])):
                 if nouns:
                     if start:
                         nouns[len(nouns) - 1] = nouns[len(nouns) - 1] + ' ' + token[0]
@@ -63,6 +89,9 @@ class CustomTagger:
                 start = False
         self.nouns = nouns # for it to be used in other places
         return nouns
+
+    def tag_currency_unit(self):
+        pass
 
     def tag_date(self):
         doc = self.spacy_ner(' '.join(self.unlemmatized_tokens))
@@ -105,6 +134,11 @@ class CustomTagger:
             else:
                 start = False
         return verbs
+
+    def is_in_nums(self, segment):
+        for num in self.nums:
+            if segment in num.split(' '):
+                return True
 
     def is_in_names(self, segment):
         # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)

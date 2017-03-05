@@ -1,4 +1,5 @@
 class KnowledgeBasedAnalyzer:
+    logical_operator = 'and'
     def __init__(self):
         import os
         dirname, filename = os.path.split(os.path.abspath(__file__))
@@ -6,7 +7,7 @@ class KnowledgeBasedAnalyzer:
         from nltk.tag.stanford import StanfordNERTagger
         import os
         self.ner_stanford = StanfordNERTagger(
-            dirname  + '/support-pkgs/english.all.3class.caseless.distsim.crf.ser.gz',
+            dirname  + '/support-pkgs/english.muc.7class.caseless.distsim.crf.ser.gz',
             dirname  + '/support-pkgs/stanford-corenlp-3.5.2.jar')
 
         # stanford pos tagger
@@ -26,6 +27,16 @@ class KnowledgeBasedAnalyzer:
         self.tagged_output = {}
 
     def analyze(self, text):
+        segments = text.split('and')
+        op = []
+        for segment in segments:
+            op.append(self.analyze_segments(segment))
+            self.tagged_output = {}
+
+        return op
+
+    def analyze_segments(self, text):
+        self.text = text
         self.lowercase(text) \
             .tokenize() \
             .tag_pos() \
@@ -33,6 +44,7 @@ class KnowledgeBasedAnalyzer:
             .tag_universal()
         self.tagged_output['INPUT_TEXT'] = self.text
         return self.tagged_output
+
 
     def lowercase(self, text):
         # to mimic text that comes out of voice to text conversion
@@ -83,6 +95,7 @@ class KnowledgeBasedAnalyzer:
         self.tagged_output['PERSON'] = tagger.tag_person()
         self.tagged_output['TYPE'] = tagger.tag_type()
         self.tagged_output['DATE'] = tagger.tag_date()
+        self.tagged_output['NUMBER'] = tagger.tag_numbers()
         self.tagged_output['SUBJECT'] = tagger.tag_subject()
         self.tagged_output['ACTION'] = tagger.tag_action()
         return self
