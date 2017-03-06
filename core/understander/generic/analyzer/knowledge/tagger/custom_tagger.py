@@ -14,6 +14,8 @@ class CustomTagger:
         self.spacy_ner = spacy_ner
         self.NOUN_TAGS = set(['NNS', 'NN', 'NNP', 'NNPS'])
         self.VERB_TAGS = set(['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
+        self.persons = []
+        self.dates = []
 
     def tag_person(self):
         # fix to have persons at different locations

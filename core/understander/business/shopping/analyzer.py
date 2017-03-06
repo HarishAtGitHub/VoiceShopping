@@ -11,5 +11,77 @@ class Analyzer:
     def analyze(self, text):
         self.text = text.lower()
 
-        return self.knowledge_analyzer.analyze(self.text)
+        self.tokens = self.text.split(' ')
+        self.start_index = 0
+        self.running_index = 0
 
+        # get product name
+        op = {}
+        product = self.get_main_product()
+        if product:
+            op['PRODUCT'] = product
+        else:
+            return 'Sorry, We were unable to figure the product you are searching for'
+
+        # get product attributes
+        op['attributes'] = []
+        self.running_index = self.start_index
+        current = ''
+        while True:
+            if self.start_index < len(self.tokens) - 1:
+                for index, token in enumerate(self.tokens[self.start_index:]):
+                    self.running_index = self.start_index + index
+                    current = current + ' ' + token
+                    result = self.get_key_value_pair(current)
+                    if result:
+                        op['attributes'].append(result)
+                        self.start_index = self.start_index + index
+                        break
+                else:
+                    break
+                current = ''
+                continue
+            else:
+                break
+
+        # return product details
+        return op
+
+    def get_key_value_pair(self, text):
+        analyzed_form = self.knowledge_analyzer.analyze_segments(
+            text,
+            person=True,
+            date=False,
+            number=True,
+            currency=True,
+            subject=True,
+            action=True)
+        if len(analyzed_form['SUBJECT']) > 1 or self.running_index == len(self.tokens) - 1:
+            res = {}
+            if analyzed_form['NUMBER']:
+                res[analyzed_form['SUBJECT'][0]] = analyzed_form['NUMBER'][0]
+            if analyzed_form['CURRENCY']:
+                res['CURRENCY'] = analyzed_form['CURRENCY'][0]
+            return res
+        else:
+            return None
+
+
+    def get_main_product(self):
+        current = ' '.join(self.tokens[:2])
+        # iterate till u find the first subject.
+        # that is the main subject
+        for index, token in enumerate(self.tokens[2:]):
+            current = current + ' ' + token
+            analyzed_form = self.knowledge_analyzer.analyze_segments(
+                current,
+                person=True,
+                date=False,
+                number=True,
+                currency=True,
+                subject=True,
+                action=True)
+            if analyzed_form['SUBJECT']:
+                self.start_index = 2 + index + 1
+                return analyzed_form['SUBJECT']
+        return None

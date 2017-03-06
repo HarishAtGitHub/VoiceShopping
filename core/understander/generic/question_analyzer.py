@@ -8,7 +8,8 @@ class Analyzer:
         from core.understander.generic.analyzer.knowledge.knowledge_based_analyzer import KnowledgeBasedAnalyzer
         self.knowledge_analyzer = KnowledgeBasedAnalyzer()
 
-    def analyze(self, text):
+    def analyze(self,
+                text):
         self.text = text.lower()
         # categorize text
         self.categorize()
@@ -24,7 +25,13 @@ class Analyzer:
         else:
             return self.knowledge_analyzer.analyze(self.question.question_extract)
         '''
-        return self.knowledge_analyzer.analyze(self.question.question_extract)
+        return self.knowledge_analyzer.analyze(self.question.question_extract,
+                                               person=True,
+                                               date=True,
+                                               number=True,
+                                               currency=True,
+                                               subject=True,
+                                               action=True)
 
     def categorize(self):
         import re

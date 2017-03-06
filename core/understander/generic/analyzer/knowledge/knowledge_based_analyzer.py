@@ -1,5 +1,17 @@
+import time
+
+def time_usage(func):
+    def wrapper(*args, **kwargs):
+        beg_ts = time.time()
+        retval = func(*args, **kwargs)
+        end_ts = time.time()
+        #print(func.__name__)
+        #print("elapsed time: %f" % (end_ts - beg_ts))
+        return retval
+    return wrapper
+
 class KnowledgeBasedAnalyzer:
-    logical_operator = 'and'
+    @time_usage
     def __init__(self):
         import os
         dirname, filename = os.path.split(os.path.abspath(__file__))
@@ -13,35 +25,60 @@ class KnowledgeBasedAnalyzer:
         # stanford pos tagger
         from nltk.tag.stanford import StanfordPOSTagger
         self.pos_stanford = StanfordPOSTagger(
-            dirname + '/support-pkgs/english-caseless-left3words-distsim.tagger',
-            dirname + '/support-pkgs/stanford-postagger.jar')
+            dirname + '/support-pkgs/english-caseless-left3words-distsim-2016-10-31.tagger',
+            dirname + '/support-pkgs/stanford-postagger-2016-10-31.jar')
 
         # spacy ner tagger
         import spacy
         self.ner_spacy = spacy.load('en')
-
         # wordnet lemmatizer
         from nltk.stem.wordnet import WordNetLemmatizer
         self.lemmatizer = WordNetLemmatizer()
 
         self.tagged_output = {}
 
-    def analyze(self, text):
+    @time_usage
+    def analyze(self,
+                text,
+                person=False,
+                date=False,
+                number=False,
+                currency=False,
+                subject=False,
+                action=False
+                ):
         segments = text.split('and')
         op = []
         for segment in segments:
-            op.append(self.analyze_segments(segment))
+            op.append(
+                self.analyze_segments(segment,
+                    person=person,
+                    date=date,
+                    number=number,
+                    currency=currency,
+                    subject=subject,
+                    action=action
+                                      ))
             self.tagged_output = {}
 
         return op
 
-    def analyze_segments(self, text):
+    @time_usage
+    def analyze_segments(self,
+                         text,
+                         person=False,
+                         date=False,
+                         number=False,
+                         currency=False,
+                         subject=False,
+                         action=False
+                         ):
         self.text = text
         self.lowercase(text) \
             .tokenize() \
             .tag_pos() \
             .lemmatize() \
-            .tag_universal()
+            .tag_universal(person, date, number, currency, subject, action)
         self.tagged_output['INPUT_TEXT'] = self.text
         return self.tagged_output
 
@@ -51,11 +88,13 @@ class KnowledgeBasedAnalyzer:
         self.text = text.lower()
         return self
 
+    @time_usage
     def tokenize(self):
         from nltk import word_tokenize
         self.tokens = word_tokenize(self.text)
         return self
 
+    @time_usage
     def tag_pos(self):
         import nltk
         from nltk import word_tokenize
@@ -65,11 +104,13 @@ class KnowledgeBasedAnalyzer:
         return self
         # print(pos_tagged_tokens)
 
+    @time_usage
     def lemmatize(self):
         self.lemmatized_tokens = [self.lemmatizer.lemmatize(token[0], pos=self.__find_tag_letter(token[1])) for token in
                                   self.pos_tagged_tokens]
         return self
 
+    @time_usage
     def __find_tag_letter(self, token):
         # ADJ, ADJ_SAT, ADV, NOUN, VERB = 'a', 's', 'r', 'n', 'v'
         JJ, RB, NN, VB = 'a', 'r', 'n', 'v'  # did not find a match for ADJ_SAT
@@ -81,7 +122,15 @@ class KnowledgeBasedAnalyzer:
             letter = 'n'  # default as per wordnet lemmatize function TODO: find some other way
         return letter
 
-    def tag_universal(self):
+    @time_usage
+    def tag_universal(self,
+                      person,
+                      date,
+                      number,
+                      currency,
+                      subject,
+                      action
+                      ):
         from core.understander.generic.analyzer.knowledge.tagger.custom_tagger import CustomTagger
         tagger = CustomTagger(
                               lemmatized_tokens=self.lemmatized_tokens,
@@ -92,11 +141,13 @@ class KnowledgeBasedAnalyzer:
         # TODO: FIXME as the verb and person names got mixed up
         # do not change order
         # Fix it later properly
-        self.tagged_output['PERSON'] = tagger.tag_person()
-        self.tagged_output['TYPE'] = tagger.tag_type()
-        self.tagged_output['DATE'] = tagger.tag_date()
-        self.tagged_output['NUMBER'] = tagger.tag_numbers()
-        self.tagged_output['CURRENCY'] = tagger.tag_currency()
-        self.tagged_output['SUBJECT'] = tagger.tag_subject()
-        self.tagged_output['ACTION'] = tagger.tag_action()
+        if(person): self.tagged_output['PERSON'] = tagger.tag_person()
+        #self.tagged_output['TYPE'] = tagger.tag_type()
+        # removing date tagging as spacy loading takes a lot of time
+        # https://github.com/explosion/spaCy/issues/219
+        if date: self.tagged_output['DATE'] = tagger.tag_date()
+        if number: self.tagged_output['NUMBER'] = tagger.tag_numbers()
+        if currency: self.tagged_output['CURRENCY'] = tagger.tag_currency()
+        if subject: self.tagged_output['SUBJECT'] = tagger.tag_subject()
+        if action: self.tagged_output['ACTION'] = tagger.tag_action()
         return self
