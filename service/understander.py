@@ -1,7 +1,9 @@
 from flask import Flask, jsonify
 from flask import abort
 from flask import request
+from core.understander.business.shopping.analyzer import Analyzer
 
+shopping_analyzer = Analyzer()
 app = Flask(__name__)
 
 API_PATH = '/ml/api/'
@@ -22,6 +24,12 @@ def understand():
         return jsonify(get_query(text, query_type))
     except KeyError as ke:
         abort(417)
+
+@app.route(API_PATH + API_VERSION + '/shopping/understand', methods=['POST'])
+def understand_shopping():
+    text = request.json['text']
+    analyzed_form = shopping_analyzer.analyze(text)
+    return jsonify(analyzed_form)
 
 def get_query(text, query_type):
     from core.understander.generic import generic_question
