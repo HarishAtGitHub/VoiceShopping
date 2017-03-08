@@ -5,8 +5,8 @@ def time_usage(func):
         beg_ts = time.time()
         retval = func(*args, **kwargs)
         end_ts = time.time()
-        #print(func.__name__)
-        #print("elapsed time: %f" % (end_ts - beg_ts))
+        print(func.__name__)
+        print("elapsed time: %f" % (end_ts - beg_ts))
         return retval
     return wrapper
 
@@ -15,19 +15,6 @@ class KnowledgeBasedAnalyzer:
     def __init__(self):
         import os
         dirname, filename = os.path.split(os.path.abspath(__file__))
-        # stanford ner tagger
-        from nltk.tag.stanford import StanfordNERTagger
-        import os
-        self.ner_stanford = StanfordNERTagger(
-            dirname  + '/support-pkgs/english.muc.7class.caseless.distsim.crf.ser.gz',
-            dirname  + '/support-pkgs/stanford-corenlp-3.5.2.jar')
-
-        # stanford pos tagger
-        from nltk.tag.stanford import StanfordPOSTagger
-        self.pos_stanford = StanfordPOSTagger(
-            dirname + '/support-pkgs/english-caseless-left3words-distsim-2016-10-31.tagger',
-            dirname + '/support-pkgs/stanford-postagger-2016-10-31.jar')
-
         # spacy ner tagger
         import spacy
         self.ner_spacy = spacy.load('en')
@@ -96,18 +83,19 @@ class KnowledgeBasedAnalyzer:
 
     @time_usage
     def tag_pos(self):
-        import nltk
-        from nltk import word_tokenize
+        from core.stanford.util.nlp import NLP
 
-        # self.pos_tagged_tokens = nltk.pos_tag(word_tokenize(self.text), tagset='universal')
-        self.pos_tagged_tokens = self.pos_stanford.tag(word_tokenize(self.text))
+        self.pos_tagged_tokens = NLP.tag_pos(self.text)
+        print(self.pos_tagged_tokens)
         return self
-        # print(pos_tagged_tokens)
 
     @time_usage
     def lemmatize(self):
+        '''
         self.lemmatized_tokens = [self.lemmatizer.lemmatize(token[0], pos=self.__find_tag_letter(token[1])) for token in
                                   self.pos_tagged_tokens]
+        '''
+        self.lemmatized_tokens = []
         return self
 
     @time_usage
@@ -136,7 +124,6 @@ class KnowledgeBasedAnalyzer:
                               lemmatized_tokens=self.lemmatized_tokens,
                               unlemmatized_tokens=self.tokens,
                               pos_tagged_tokens = self.pos_tagged_tokens,
-                              stanford_ner=self.ner_stanford,
                               spacy_ner=self.ner_spacy)
         # TODO: FIXME as the verb and person names got mixed up
         # do not change order

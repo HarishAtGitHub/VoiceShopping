@@ -1,5 +1,17 @@
+import time
+
+def time_usage(func):
+    def wrapper(*args, **kwargs):
+        beg_ts = time.time()
+        retval = func(*args, **kwargs)
+        end_ts = time.time()
+        print(func.__name__)
+        print("elapsed time: %f" % (end_ts - beg_ts))
+        return retval
+    return wrapper
+
 class CustomTagger:
-    def __init__(self, unlemmatized_tokens, lemmatized_tokens, pos_tagged_tokens, stanford_ner, spacy_ner):
+    def __init__(self, unlemmatized_tokens, lemmatized_tokens, pos_tagged_tokens, spacy_ner):
         self.lemmatized_tokens = lemmatized_tokens
         self.unlemmatized_tokens = unlemmatized_tokens
         self.pos_tagged_tokens = pos_tagged_tokens
@@ -10,16 +22,19 @@ class CustomTagger:
         with open(currency_file, 'rb') as storage_file:
             import pickle
             self.currency_extract = pickle.load(storage_file)
-        self.stanford_ner = stanford_ner
         self.spacy_ner = spacy_ner
         self.NOUN_TAGS = set(['NNS', 'NN', 'NNP', 'NNPS'])
         self.VERB_TAGS = set(['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
         self.persons = []
         self.dates = []
+        self.nums = []
+        self.currencies = []
 
+    @time_usage
     def tag_person(self):
         # fix to have persons at different locations
-        ner_tagged_tokens = self.stanford_ner.tag(self.unlemmatized_tokens)
+        from core.stanford.util.nlp import NLP
+        ner_tagged_tokens = NLP.tag_ner(' '.join(self.unlemmatized_tokens))
         persons = list()
         start = False
         for token in ner_tagged_tokens:
@@ -38,6 +53,7 @@ class CustomTagger:
         self.persons = persons # for it to be used in other places
         return persons
 
+    @time_usage
     def tag_numbers(self):
         pos_tagged_tokens = self.pos_tagged_tokens
         nums = list()
@@ -63,6 +79,7 @@ class CustomTagger:
         self.nums = nums  # for it to be used in other places
         return nums
 
+    @time_usage
     def tag_subject(self, tokens = None):
         # fix to have persons at different locations
         #ner_tagged_tokens = self.stanford_ner.tag(tokens if tokens else self.tokens)
@@ -107,6 +124,7 @@ class CustomTagger:
                 self.currencies.append(token)
         return self.currencies
 
+    @time_usage
     def tag_date(self):
         doc = self.spacy_ner(' '.join(self.unlemmatized_tokens))
         dates = []
@@ -124,6 +142,7 @@ class CustomTagger:
                 self.dates.append(token)
         return dates
 
+    @time_usage
     def tag_action(self):
         pos_lemmatized_tagged_tokens = self.pos_tagged_tokens
         verbs = list()

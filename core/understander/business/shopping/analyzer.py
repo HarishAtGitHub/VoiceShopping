@@ -75,12 +75,12 @@ class Analyzer:
             current = current + ' ' + token
             analyzed_form = self.knowledge_analyzer.analyze_segments(
                 current,
-                person=True,
+                person=False,
                 date=False,
-                number=True,
-                currency=True,
+                number=False,
+                currency=False,
                 subject=True,
-                action=True)
+                action=False)
             if analyzed_form['SUBJECT']:
                 self.start_index = 2 + index + 1
                 return analyzed_form['SUBJECT']
