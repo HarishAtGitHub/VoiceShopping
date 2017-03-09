@@ -43,7 +43,8 @@ class Analyzer:
                 continue
             else:
                 break
-
+        # get global attributes to handle cases like get green  chairs
+        op['attributes'] = op['attributes'] + self.get_universal_attributes(text)
         # return product details
         return op
 
@@ -67,6 +68,28 @@ class Analyzer:
             return None
 
 
+    def get_universal_attributes(self, text):
+        analyzed_form = self.knowledge_analyzer.analyze_segments(
+            text,
+            person=False,
+            date=False,
+            number=False,
+            currency=False,
+            subject=False,
+            action=False,
+            color=True)
+        res = []
+        if analyzed_form['COLOR']:
+            color = {'COLOR' : analyzed_form['COLOR']}
+            res.append(color)
+
+        if res:
+            return res
+        else:
+            return None
+
+
+
     def get_main_product(self):
         current = ' '.join(self.tokens[:2])
         # iterate till u find the first subject.
@@ -80,7 +103,8 @@ class Analyzer:
                 number=False,
                 currency=False,
                 subject=True,
-                action=False)
+                action=False,
+                color=True)
             if analyzed_form['SUBJECT']:
                 self.start_index = 2 + index + 1
                 return analyzed_form['SUBJECT']

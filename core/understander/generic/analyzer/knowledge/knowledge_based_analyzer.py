@@ -22,6 +22,18 @@ class KnowledgeBasedAnalyzer:
         from nltk.stem.wordnet import WordNetLemmatizer
         self.lemmatizer = WordNetLemmatizer()
 
+        #load color and currency extract
+        # TODO: put file locations in a common file
+        currency_file = dirname + '/../../../../../data/extract/currency.ser'
+        with open(currency_file, 'rb') as storage_file:
+            import pickle
+            self.currency_extract = pickle.load(storage_file)
+
+        currency_file = dirname + '/../../../../../data/extract/color.ser'
+        with open(currency_file, 'rb') as storage_file:
+            import pickle
+            self.color_extract = pickle.load(storage_file)
+
         self.tagged_output = {}
 
     @time_usage
@@ -32,7 +44,8 @@ class KnowledgeBasedAnalyzer:
                 number=False,
                 currency=False,
                 subject=False,
-                action=False
+                action=False,
+                color=False
                 ):
         segments = text.split('and')
         op = []
@@ -44,7 +57,8 @@ class KnowledgeBasedAnalyzer:
                     number=number,
                     currency=currency,
                     subject=subject,
-                    action=action
+                    action=action,
+                    color=color
                                       ))
             self.tagged_output = {}
 
@@ -58,14 +72,15 @@ class KnowledgeBasedAnalyzer:
                          number=False,
                          currency=False,
                          subject=False,
-                         action=False
+                         action=False,
+                         color=False
                          ):
         self.text = text
         self.lowercase(text) \
             .tokenize() \
             .tag_pos() \
             .lemmatize() \
-            .tag_universal(person, date, number, currency, subject, action)
+            .tag_universal(person, date, number, currency, subject, action, color)
         self.tagged_output['INPUT_TEXT'] = self.text
         return self.tagged_output
 
@@ -117,18 +132,22 @@ class KnowledgeBasedAnalyzer:
                       number,
                       currency,
                       subject,
-                      action
+                      action,
+                      color
                       ):
         from core.understander.generic.analyzer.knowledge.tagger.custom_tagger import CustomTagger
-        tagger = CustomTagger(
+        tagger = CustomTagger(text=self.text,
                               lemmatized_tokens=self.lemmatized_tokens,
                               unlemmatized_tokens=self.tokens,
                               pos_tagged_tokens = self.pos_tagged_tokens,
-                              spacy_ner=self.ner_spacy)
+                              spacy_ner=self.ner_spacy,
+                              currency_extract=self.currency_extract,
+                              color_extract=self.color_extract)
         # TODO: FIXME as the verb and person names got mixed up
         # do not change order
         # Fix it later properly
-        if(person): self.tagged_output['PERSON'] = tagger.tag_person()
+        if color: self.tagged_output['COLOR'] = tagger.tag_color()
+        if person: self.tagged_output['PERSON'] = tagger.tag_person()
         #self.tagged_output['TYPE'] = tagger.tag_type()
         # removing date tagging as spacy loading takes a lot of time
         # https://github.com/explosion/spaCy/issues/219

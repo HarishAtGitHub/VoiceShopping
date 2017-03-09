@@ -11,17 +11,25 @@ def time_usage(func):
     return wrapper
 
 class CustomTagger:
-    def __init__(self, unlemmatized_tokens, lemmatized_tokens, pos_tagged_tokens, spacy_ner):
+    def __init__(self,
+                 text,
+                 unlemmatized_tokens,
+                 lemmatized_tokens,
+                 pos_tagged_tokens,
+                 spacy_ner,
+                 color_extract,
+                 currency_extract):
+        self.text = text
         self.lemmatized_tokens = lemmatized_tokens
         self.unlemmatized_tokens = unlemmatized_tokens
         self.pos_tagged_tokens = pos_tagged_tokens
         import os
         dirname, _ = os.path.split(os.path.abspath(__file__))
-        # TODO: put file locations in a common file
-        currency_file = dirname + '/../../../../../../data/extract/currency.ser'
-        with open(currency_file, 'rb') as storage_file:
-            import pickle
-            self.currency_extract = pickle.load(storage_file)
+
+        self.color_extract = color_extract
+        self.currency_extract = currency_extract
+
+
         self.spacy_ner = spacy_ner
         self.NOUN_TAGS = set(['NNS', 'NN', 'NNP', 'NNPS'])
         self.VERB_TAGS = set(['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ'])
@@ -29,12 +37,13 @@ class CustomTagger:
         self.dates = []
         self.nums = []
         self.currencies = []
+        self.colors = []
 
     @time_usage
     def tag_person(self):
         # fix to have persons at different locations
         from core.stanford.util.nlp import NLP
-        ner_tagged_tokens = NLP.tag_ner(' '.join(self.unlemmatized_tokens))
+        ner_tagged_tokens = NLP.tag_ner(self.text)
         persons = list()
         start = False
         for token in ner_tagged_tokens:
@@ -80,6 +89,32 @@ class CustomTagger:
         return nums
 
     @time_usage
+    def tag_color(self):
+        # assumption : colors can span 1,2,3 words together
+        colors = []
+        # len 3
+        for i in zip(self.unlemmatized_tokens,
+                     self.unlemmatized_tokens[1:],
+                     self.unlemmatized_tokens[2:]):
+            segment = ' '.join(list(i))
+            if segment in self.color_extract:
+                colors.append(segment)
+
+        # len 3
+        for i in zip(self.unlemmatized_tokens,
+                     self.unlemmatized_tokens[1:]):
+            segment = ' '.join(list(i))
+            if segment in self.color_extract:
+                colors.append(segment)
+
+        # len 3
+        for segment in self.unlemmatized_tokens:
+            if segment in self.color_extract:
+                colors.append(segment)
+        self.colors = colors
+        return colors
+
+    @time_usage
     def tag_subject(self, tokens = None):
         # fix to have persons at different locations
         #ner_tagged_tokens = self.stanford_ner.tag(tokens if tokens else self.tokens)
@@ -95,7 +130,8 @@ class CustomTagger:
                 and not self.is_in_names(token[0])
                 and not self.is_in_dates(token[0])
                 and not self.is_in_nums(token[0])
-                and not self.is_in_currencies(token[0])):
+                and not self.is_in_currencies(token[0])
+                and not self.is_in_colors(token[0])):
                 if nouns:
                     if start:
                         nouns[len(nouns) - 1] = nouns[len(nouns) - 1] + ' ' + token[0]
@@ -177,6 +213,12 @@ class CustomTagger:
         # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
         for person in self.persons:
             if segment in person.split(' '):
+                return True
+
+    def is_in_colors(self, segment):
+        # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
+        for color in self.colors:
+            if segment in color.split(' '):
                 return True
 
     def is_in_dates(self, segment):
