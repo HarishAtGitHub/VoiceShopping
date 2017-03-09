@@ -24,7 +24,7 @@ def massage_string(string):
     return string.lower()
 
 #################### read corpus file ##################################
-corpus_file = get_current_file_location() + '/../../corpus/currency.corpus.wiki'
+corpus_file = get_current_file_location() + '/../../corpus/currency/currency.corpus.wiki'
 
 with open(corpus_file, 'r') as corpus:
     corpus_content = corpus.read()
