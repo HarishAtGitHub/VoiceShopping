@@ -16,29 +16,29 @@ class Analyzer:
 
         # handle based on the category
         if(self.question_processed_form['category'] == 'other'):
-            result = self.grammar_analyzer.analyze(self.question.question_extract)
+            try :
+                result = self.grammar_analyzer.analyze(self.question.question_extract)
+            except ValueError as ve:
+                # happens if you give text not in grammar
+                return self.get_knowledge_analyzed_form()
+
             if result['SUBJECT'] == 'NOT FOUND':
-                result = self.knowledge_analyzer.analyze_segments(self.question.question_extract,
-                    person=True,
-                    date=True,
-                    number=True,
-                    currency=True,
-                    subject=True,
-                    action=True)
-                result['TYPE'] = self.question_processed_form['category']
-                return result
+                self.get_knowledge_analyzed_form()
             else:
                 return result
         else:
-            result = self.knowledge_analyzer.analyze_segments(self.question.question_extract,
-                person=True,
-                date=True,
-                number=True,
-                currency=True,
-                subject=True,
-                action=True)
-            result['TYPE'] = self.question_processed_form['category']
-            return result
+            return self.get_knowledge_analyzed_form()
+
+    def get_knowledge_analyzed_form(self):
+        result = self.knowledge_analyzer.analyze_segments(self.question.question_extract,
+                                                          person=True,
+                                                          date=True,
+                                                          number=True,
+                                                          currency=True,
+                                                          subject=True,
+                                                          action=True)
+        result['TYPE'] = self.question_processed_form['category']
+        return result
 
     def categorize(self):
         import re
