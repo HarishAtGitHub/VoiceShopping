@@ -1,14 +1,4 @@
-import time
-
-def time_usage(func):
-    def wrapper(*args, **kwargs):
-        beg_ts = time.time()
-        retval = func(*args, **kwargs)
-        end_ts = time.time()
-        print(func.__name__)
-        print("elapsed time: %f" % (end_ts - beg_ts))
-        return retval
-    return wrapper
+from core.commons.util import *
 
 class CustomTagger:
     def __init__(self,
@@ -71,11 +61,11 @@ class CustomTagger:
 
         for index, token in enumerate(pos_tagged_tokens):
             if ((token[1] in NUMBER_TAGS)
-                and not self.is_in_dates(token[0])):
+                and not self.is_segment_already_tagged(token[0], ['dates'])):
                 if nums:
                     if start:
                         nums[len(nums) - 1] = nums[len(nums) - 1] + ' ' + token[0]
-                        if self.is_in_dates(nums[len(nums) - 1]):
+                        if self.is_segment_already_tagged(nums[len(nums) - 1], ['dates']):
                             nums.pop()
                     else:
                         start = True
@@ -127,15 +117,15 @@ class CustomTagger:
         GERUND_TAG = 'VBG'
         for index, token in enumerate(pos_tagged_tokens):
             if ((token[1] in self.NOUN_TAGS or token[1] in NUMBER_TAGS)
-                and not self.is_in_names(token[0])
-                and not self.is_in_dates(token[0])
-                and not self.is_in_nums(token[0])
-                and not self.is_in_currencies(token[0])
-                and not self.is_in_colors(token[0])):
+                and not self.is_segment_already_tagged(token[0], ['currencies',
+                                                                  'persons',
+                                                                  'dates',
+                                                                  'nums',
+                                                                  'colors'])):
                 if nouns:
                     if start:
                         nouns[len(nouns) - 1] = nouns[len(nouns) - 1] + ' ' + token[0]
-                        if self.is_in_dates(nouns[len(nouns) - 1]):
+                        if self.is_segment_already_tagged(nouns[len(nouns) - 1], ['dates']):
                             nouns.pop()
 
                     else:
@@ -187,9 +177,8 @@ class CustomTagger:
         USELESS_VERBS = set(['is', 'was', 'are', 'were',  'has', 'had', 'have', 'does', 'do', 'doing', 'be'])
         for token in pos_lemmatized_tagged_tokens:
             if (token[1] in self.VERB_TAGS and
-                    not (self.is_in_names(token[0])) and
-                    not (token[0] in USELESS_VERBS) and
-                    not (self.is_in_nouns(token[0]))):
+                    not (self.is_segment_already_tagged(token[0], ['persons', 'nouns'])) and
+                    not (token[0] in USELESS_VERBS)):
                 if verbs:
                     if start:
                         verbs[len(verbs) - 1] = verbs[len(verbs) - 1] + ' ' + token[0]
@@ -204,44 +193,11 @@ class CustomTagger:
                 start = False
         return verbs
 
-    def is_in_nums(self, segment):
-        for num in self.nums:
-            if segment in num.split(' '):
-                return True
-
-    def is_in_names(self, segment):
-        # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
-        for person in self.persons:
-            if segment in person.split(' '):
-                return True
-
-    def is_in_colors(self, segment):
-        # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
-        for color in self.colors:
-            if segment in color.split(' '):
-                return True
-
-    def is_in_dates(self, segment):
-        # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
-        #return segment in self.dates
-        for date in self.dates:
-            if segment in date.split(' '):
-                return True
-
-    # used especially not to repeat the gerunds
-    def is_in_nouns(self, segment):
-        # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
-        #return segment in self.dates
-        for noun in self.nouns:
-            if segment in noun.split(' '):
-                return True
-
-
-    def is_in_currencies(self, segment):
-        # used because some names were misunderstood as verbs like sylvester in douglas sylvester(not sure why)
-        for currency in self.currencies:
-            if segment in currency.split(' '):
-                return True
+    def is_segment_already_tagged(self, segment, tags):
+        for tag in tags:
+            for item in self.__dict__[tag]:
+                if segment in item.split(' '):
+                    return True
 
     def tag_type(self):
         supported_solid_question_types = ['what', 'who', 'when']

@@ -88,8 +88,6 @@ class Analyzer:
         else:
             return None
 
-
-
     def get_main_product(self):
         current = ' '.join(self.tokens[:2])
         # iterate till u find the first subject.

@@ -1,23 +1,15 @@
-import time
-
-def time_usage(func):
-    def wrapper(*args, **kwargs):
-        beg_ts = time.time()
-        retval = func(*args, **kwargs)
-        end_ts = time.time()
-        print(func.__name__)
-        print("elapsed time: %f" % (end_ts - beg_ts))
-        return retval
-    return wrapper
+from core.commons.util import *
 
 class KnowledgeBasedAnalyzer:
     @time_usage
     def __init__(self):
         import os
         dirname, filename = os.path.split(os.path.abspath(__file__))
+
         # spacy ner tagger
         import spacy
         self.ner_spacy = spacy.load('en')
+
         # wordnet lemmatizer
         from nltk.stem.wordnet import WordNetLemmatizer
         self.lemmatizer = WordNetLemmatizer()
