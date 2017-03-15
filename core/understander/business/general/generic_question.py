@@ -1,5 +1,6 @@
-from core.understander.generic.question_analyzer import Analyzer
-from core.understander.generic.time_analyzer import TimeAnalyzer
+from core.commons.time_analyzer import TimeAnalyzer
+from core.understander.business.general.question_analyzer import Analyzer
+
 
 def understand(text):
     analyzer = Analyzer(text)

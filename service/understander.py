@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask import abort
 from flask import request
+
 from core.understander.business.shopping.analyzer import Analyzer
 
 shopping_analyzer = Analyzer()
@@ -32,7 +33,7 @@ def understand_shopping():
     return jsonify(analyzed_form)
 
 def get_query(text, query_type):
-    from core.understander.generic import generic_question
+    from core.understander.business.general import generic_question
     result = generic_question.get_query_from_sentance(text, query_type)
     return result
 

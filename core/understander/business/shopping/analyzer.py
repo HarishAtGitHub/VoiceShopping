@@ -1,5 +1,3 @@
-from core.understander.generic.question_category_dict import *
-
 class Analyzer:
     # instantiate analyzer only once and reuse it or else each time it takes time
     def __init__(self):
