@@ -5,6 +5,10 @@ from flask import request
 from core.understander.business.shopping.analyzer import Analyzer
 
 shopping_analyzer = Analyzer()
+
+from core.understander.business.general.question_analyzer import Analyzer
+
+generic_analyzer = Analyzer()
 app = Flask(__name__)
 
 API_PATH = '/ml/api/'
@@ -14,28 +18,17 @@ API_VERSION = 'v1.0'
 def get_status():
     return "Hello ! Answer service is Up. Do a POST request to same URL with body in the  json form {'text':'<text>'}"
 
-@app.route(API_PATH + API_VERSION + '/understand', methods=['POST'])
+@app.route(API_PATH + API_VERSION + '/general/understander', methods=['POST'])
 def understand():
-    try:
-        text = request.json['text']
-        if 'query_type' in request.json:
-            query_type = request.json['query_type']
-        else:
-            query_type = None
-        return jsonify(get_query(text, query_type))
-    except KeyError as ke:
-        abort(417)
+    text = request.json['text']
+    analyzed_form = generic_analyzer.analyze(text)
+    return jsonify(analyzed_form)
 
-@app.route(API_PATH + API_VERSION + '/shopping/understand', methods=['POST'])
+@app.route(API_PATH + API_VERSION + '/shopping/understander', methods=['POST'])
 def understand_shopping():
     text = request.json['text']
     analyzed_form = shopping_analyzer.analyze(text)
     return jsonify(analyzed_form)
-
-def get_query(text, query_type):
-    from core.understander.business.general import generic_question
-    result = generic_question.get_query_from_sentance(text, query_type)
-    return result
 
 @app.route('/')
 def root():

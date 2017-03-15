@@ -15,23 +15,30 @@ class Analyzer:
         self.categorize()
 
         # handle based on the category
-        '''
         if(self.question_processed_form['category'] == 'other'):
             result = self.grammar_analyzer.analyze(self.question.question_extract)
             if result['SUBJECT'] == 'NOT FOUND':
-                return self.knowledge_analyzer.analyze(self.question.question_extract)
+                result = self.knowledge_analyzer.analyze_segments(self.question.question_extract,
+                    person=True,
+                    date=True,
+                    number=True,
+                    currency=True,
+                    subject=True,
+                    action=True)
+                result['TYPE'] = self.question_processed_form['category']
+                return result
             else:
                 return result
         else:
-            return self.knowledge_analyzer.analyze(self.question.question_extract)
-        '''
-        return self.knowledge_analyzer.analyze(self.question.question_extract,
-                                               person=True,
-                                               date=True,
-                                               number=True,
-                                               currency=True,
-                                               subject=True,
-                                               action=True)
+            result = self.knowledge_analyzer.analyze_segments(self.question.question_extract,
+                person=True,
+                date=True,
+                number=True,
+                currency=True,
+                subject=True,
+                action=True)
+            result['TYPE'] = self.question_processed_form['category']
+            return result
 
     def categorize(self):
         import re
