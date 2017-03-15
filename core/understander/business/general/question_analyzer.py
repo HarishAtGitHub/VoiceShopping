@@ -23,7 +23,7 @@ class Analyzer:
                 return self.get_knowledge_analyzed_form()
 
             if result['SUBJECT'] == 'NOT FOUND':
-                self.get_knowledge_analyzed_form()
+                return self.get_knowledge_analyzed_form()
             else:
                 return result
         else:
