@@ -93,7 +93,7 @@ class KnowledgeBasedAnalyzer:
         from core.stanford.util.nlp import NLP
 
         self.pos_tagged_tokens = NLP.tag_pos(self.text)
-        print(self.pos_tagged_tokens)
+        #print(self.pos_tagged_tokens)
         return self
 
     @time_usage

@@ -14,9 +14,10 @@ app = Flask(__name__)
 API_PATH = '/ml/api/'
 API_VERSION = 'v1.0'
 
-@app.route(API_PATH + API_VERSION + '/understand', methods=['GET'])
+@app.route(API_PATH + API_VERSION + '/understander', methods=['GET'])
 def get_status():
-    return "Hello ! Answer service is Up. Do a POST request to same URL with body in the  json form {'text':'<text>'}"
+    return app.send_static_file('guide.html')
+
 
 @app.route(API_PATH + API_VERSION + '/general/understander', methods=['POST'])
 def understand():
