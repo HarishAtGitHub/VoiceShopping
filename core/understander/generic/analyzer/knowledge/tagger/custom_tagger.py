@@ -28,6 +28,7 @@ class CustomTagger:
         self.nums = []
         self.currencies = []
         self.colors = []
+        self.math_comparisons = []
 
     @time_usage
     def tag_person(self):
@@ -51,6 +52,25 @@ class CustomTagger:
                 start = False
         self.persons = persons # for it to be used in other places
         return persons
+
+    @time_usage
+    def tag_math_inequality(self):
+        entities = []
+        terms_less = ['less than', 'lesser than', 'not more than', 'below', 'under']
+        terms_more = ['more than', 'greater than', 'above', 'over']
+        terms_equal = ['equal to', 'about']
+        relations = {
+                     '<' : terms_less,
+                     '>' : terms_more,
+                     '=' : terms_equal
+                     }
+        for relation in relations.keys():
+            for term in relations[relation]:
+                if term in self.text:
+                    entities.append(relation)
+
+        self.math_comparisons = entities
+        return self.math_comparisons
 
     @time_usage
     def tag_numbers(self):

@@ -54,15 +54,18 @@ class Analyzer:
             number=True,
             currency=True,
             subject=True,
-            action=True)
+            action=True,
+            math_comparisons=True)
         if len(analyzed_form['SUBJECT']) > 1 or self.running_index == len(self.tokens) - 1:
             res = {}
+            res['modifiers'] = {}
             if analyzed_form['NUMBER']:
                 res['key'] = analyzed_form['SUBJECT'][0]
                 res['value'] = analyzed_form['NUMBER'][0]
             if analyzed_form['CURRENCY']:
-                res['modifiers'] = {}
                 res['modifiers']['CURRENCY'] = analyzed_form['CURRENCY'][0]
+            if analyzed_form['RELATION']:
+                res['modifiers']['RELATION'] = analyzed_form['RELATION']
             return res
         else:
             return None
@@ -77,7 +80,8 @@ class Analyzer:
             currency=False,
             subject=False,
             action=False,
-            color=True)
+            color=True,
+            math_comparisons=False)
         res = []
         if analyzed_form['COLOR']:
             color ={'key' : 'color'}
@@ -103,7 +107,8 @@ class Analyzer:
                 currency=False,
                 subject=True,
                 action=False,
-                color=True)
+                color=True,
+                math_comparisons=False)
             if analyzed_form['SUBJECT']:
                 self.start_index = 2 + index + 1
                 return analyzed_form['SUBJECT']

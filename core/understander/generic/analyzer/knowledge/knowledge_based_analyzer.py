@@ -37,7 +37,8 @@ class KnowledgeBasedAnalyzer:
                 currency=False,
                 subject=False,
                 action=False,
-                color=False
+                color=False,
+                math_comparisons=False
                 ):
         segments = text.split('and')
         op = []
@@ -50,7 +51,8 @@ class KnowledgeBasedAnalyzer:
                     currency=currency,
                     subject=subject,
                     action=action,
-                    color=color
+                    color=color,
+                    math_comparisons=math_comparisons
                                       ))
             self.tagged_output = {}
 
@@ -65,14 +67,15 @@ class KnowledgeBasedAnalyzer:
                          currency=False,
                          subject=False,
                          action=False,
-                         color=False
+                         color=False,
+                         math_comparisons=False
                          ):
         self.text = text
         self.lowercase(text) \
             .tokenize() \
             .tag_pos() \
             .lemmatize() \
-            .tag_universal(person, date, number, currency, subject, action, color)
+            .tag_universal(person, date, number, currency, subject, action, color, math_comparisons)
         self.tagged_output['INPUT_TEXT'] = self.text
         return self.tagged_output
 
@@ -125,7 +128,8 @@ class KnowledgeBasedAnalyzer:
                       currency,
                       subject,
                       action,
-                      color
+                      color,
+                      math_comparisons
                       ):
         from core.understander.generic.analyzer.knowledge.tagger.custom_tagger import CustomTagger
         tagger = CustomTagger(text=self.text,
@@ -148,4 +152,5 @@ class KnowledgeBasedAnalyzer:
         if currency: self.tagged_output['CURRENCY'] = tagger.tag_currency()
         if subject: self.tagged_output['SUBJECT'] = tagger.tag_subject()
         if action: self.tagged_output['ACTION'] = tagger.tag_action()
+        if math_comparisons: self.tagged_output['RELATION'] = tagger.tag_math_inequality()
         return self
