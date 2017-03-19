@@ -52,7 +52,6 @@ class Analyzer:
         analyzed_form = self.knowledge_analyzer.analyze_segments(
             text,
             person=True,
-            date=False,
             number=True,
             currency=True,
             subject=True,
@@ -82,14 +81,9 @@ class Analyzer:
     def get_universal_attributes(self, text):
         analyzed_form = self.knowledge_analyzer.analyze_segments(
             text,
-            person=False,
-            date=False,
             number=True,
             currency=True,
-            subject=False,
-            action=False,
-            color=True,
-            math_comparisons=False)
+            color=True)
         res = []
         if analyzed_form['COLOR']:
             color ={'key' : 'color'}
@@ -127,14 +121,8 @@ class Analyzer:
             current = current + ' ' + token
             analyzed_form = self.knowledge_analyzer.analyze_segments(
                 current,
-                person=False,
-                date=False,
-                number=False,
-                currency=False,
                 subject=True,
-                action=False,
-                color=True,
-                math_comparisons=False)
+                color=True)
             if analyzed_form['SUBJECT']:
                 self.start_index = 2 + index + 1
                 return analyzed_form['SUBJECT']
