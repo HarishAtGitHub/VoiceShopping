@@ -1,3 +1,5 @@
+from core.commons.text2num import text2num, NumberException
+
 class Analyzer:
     # instantiate analyzer only once and reuse it or else each time it takes time
     def __init__(self):
@@ -61,7 +63,13 @@ class Analyzer:
             res['modifiers'] = {}
             if analyzed_form['NUMBER']:
                 res['key'] = analyzed_form['SUBJECT'][0]
-                res['value'] = analyzed_form['NUMBER'][0]
+                try:
+                    res['value'] = int(text2num(analyzed_form['NUMBER'][0]))
+                except NumberException as ne:
+                    try:
+                        res['value'] = int(analyzed_form['NUMBER'][0])
+                    except ValueError as ve:
+                        res['value'] = analyzed_form['NUMBER'][0]
             if analyzed_form['CURRENCY']:
                 res['modifiers']['CURRENCY'] = analyzed_form['CURRENCY'][0]
             if analyzed_form['RELATION']:
@@ -76,8 +84,8 @@ class Analyzer:
             text,
             person=False,
             date=False,
-            number=False,
-            currency=False,
+            number=True,
+            currency=True,
             subject=False,
             action=False,
             color=True,
@@ -87,6 +95,24 @@ class Analyzer:
             color ={'key' : 'color'}
             color['value'] = analyzed_form['COLOR']
             res.append(color)
+
+        if analyzed_form['NUMBER'] and analyzed_form['CURRENCY']:
+            # this gives a possibility of money
+            money = {'key' : 'money'}
+            money['value'] = []
+            import itertools
+            for m in itertools.product(analyzed_form['NUMBER'], analyzed_form['CURRENCY']):
+                segment = ' '.join(m)
+                if segment in text:
+                    try:
+                        num = int(text2num(m[0]))
+                    except NumberException as ne:
+                        try:
+                            num = int(m[0])
+                        except ValueError as ve:
+                            num = m[0]
+                    money['value'].append({'number': num, 'unit': m[1]})
+            res.append(money)
 
         if res:
             return res
