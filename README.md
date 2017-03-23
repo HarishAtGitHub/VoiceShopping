@@ -19,5 +19,6 @@ sudo python3
 ...     ssl._create_default_https_context = _create_unverified_https_context
 ... 
 >>> nltk.download('wordnet')
+>>> nltk.download('punkt')
 
 python3 service/understander.py
