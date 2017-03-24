@@ -2,9 +2,11 @@ from flask import Flask, jsonify
 from flask import abort
 from flask import request
 
-from core.understander.business.shopping.analyzer import Analyzer
+from core.understander.business.shopping.analyzer import Analyzer as ShoppingAnalyzer
+from core.understander.companies.walmart.analyzer import Analyzer as WalmartAnalyzer
 
-shopping_analyzer = Analyzer()
+shopping_analyzer = ShoppingAnalyzer()
+walmart_shopping_analyzer = WalmartAnalyzer()
 
 from core.understander.business.general.question_analyzer import Analyzer
 
@@ -29,6 +31,12 @@ def understand():
 def understand_shopping():
     text = request.json['text']
     analyzed_form = shopping_analyzer.analyze(text)
+    return jsonify(analyzed_form)
+
+@app.route(API_PATH + API_VERSION + '/shopping/understander/walmart', methods=['POST'])
+def understand_shopping_walmart():
+    text = request.json['text']
+    analyzed_form = walmart_shopping_analyzer.analyze(text)
     return jsonify(analyzed_form)
 
 @app.route('/')

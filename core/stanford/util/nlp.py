@@ -1,5 +1,5 @@
 import requests
-from properties.core import STANFORD_NLP_POS_TAG_ENDPOINT, STANFORD_NLP_NER_TAG_ENDPOINT
+from properties.config_urls import STANFORD_NLP_POS_TAG_ENDPOINT, STANFORD_NLP_NER_TAG_ENDPOINT
 
 class NLP():
     @classmethod
