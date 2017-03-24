@@ -1,5 +1,6 @@
 from core.commons.text2num import text2num, NumberException
 from properties.core.understander.business.shopping import json_properties as shopping_json_prop
+import re
 
 class Analyzer:
     # instantiate analyzer only once and reuse it or else each time it takes time
@@ -10,7 +11,8 @@ class Analyzer:
         self.knowledge_analyzer = KnowledgeBasedAnalyzer()
 
     def analyze(self, text):
-        self.text = text.lower()
+        self.text = text.lower().strip()
+        self.text = re.sub('\s\s+', ' ', self.text)
 
         self.tokens = self.text.split(' ')
         self.start_index = 0

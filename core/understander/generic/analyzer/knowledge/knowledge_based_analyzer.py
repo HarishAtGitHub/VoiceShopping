@@ -1,4 +1,5 @@
 from core.commons.util import *
+import re
 
 class KnowledgeBasedAnalyzer:
     @time_usage
@@ -71,7 +72,7 @@ class KnowledgeBasedAnalyzer:
                          math_comparisons=False
                          ):
         self.text = text
-        self.lowercase(text) \
+        self.massage(text) \
             .tokenize() \
             .tag_pos() \
             .lemmatize() \
@@ -79,10 +80,17 @@ class KnowledgeBasedAnalyzer:
         self.tagged_output['INPUT_TEXT'] = self.text
         return self.tagged_output
 
-
-    def lowercase(self, text):
-        # to mimic text that comes out of voice to text conversion
+    def massage(self, text):
+        # correct any possible problems in string
+        # 1. convert to lower case
         self.text = text.lower()
+
+        # 2. strip space before and after the string
+        self.text = self.text.strip()
+
+        # 3. remove more than one space in between words (or else it is considered as a separate token
+        # which is irrelevant)
+        self.text = re.sub('\s\s+', ' ', self.text)
         return self
 
     @time_usage
