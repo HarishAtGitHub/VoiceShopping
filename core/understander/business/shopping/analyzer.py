@@ -4,11 +4,11 @@ import re
 
 class Analyzer:
     # instantiate analyzer only once and reuse it or else each time it takes time
-    def __init__(self):
+    def __init__(self, data=None):
         from core.understander.generic.analyzer.grammar.grammar_based_analyzer import GrammarBasedAnalyzer
         self.grammar_analyzer = GrammarBasedAnalyzer()
         from core.understander.generic.analyzer.knowledge.knowledge_based_analyzer import KnowledgeBasedAnalyzer
-        self.knowledge_analyzer = KnowledgeBasedAnalyzer()
+        self.knowledge_analyzer = KnowledgeBasedAnalyzer(data)
 
     def analyze(self, text):
         self.text = text.lower().strip()
@@ -157,13 +157,21 @@ class Analyzer:
             text,
             number=True,
             currency=True,
-            color=True)
+            color=True,
+            material=True)
         op = []
 
         # check color
         if analyzed_form['COLOR']:
             color ={shopping_json_prop.ATTR_KEY : shopping_json_prop.ATTR_COLOR}
             color[shopping_json_prop.ATTR_VALUE] = analyzed_form['COLOR']
+            op.append(color)
+
+        # check and set material
+        material = analyzed_form['MATERIAL']
+        if material:
+            color ={shopping_json_prop.ATTR_KEY : shopping_json_prop.ATTR_MATERIAL}
+            color[shopping_json_prop.ATTR_VALUE] = material
             op.append(color)
 
         # check money

@@ -1,9 +1,14 @@
+from constants import ROOT_DIR
+from core.commons.company_data import DataStore
 from core.understander.business.shopping.analyzer import Analyzer as ShoppingAnalyzer
 from properties.core.understander.business.shopping import json_properties as shopping_json_prop
+from os.path import dirname, join
 
 class Analyzer:
     def __init__(self):
-        self.analyzer = ShoppingAnalyzer()
+        materials_file = join(ROOT_DIR, 'data', 'materials', 'walmart_options')
+        data = DataStore(materials_file)
+        self.analyzer = ShoppingAnalyzer(data)
 
     def analyze(self, text):
         self.text = text.lower().strip()

@@ -3,7 +3,7 @@ import re
 
 class KnowledgeBasedAnalyzer:
     @time_usage
-    def __init__(self):
+    def __init__(self, data=None):
         import os
         dirname, filename = os.path.split(os.path.abspath(__file__))
 
@@ -27,6 +27,13 @@ class KnowledgeBasedAnalyzer:
             import pickle
             self.color_extract = pickle.load(storage_file)
 
+        # set materials
+        try:
+            self.material_set = data.material_set
+        except:
+            self.material_set = set()
+
+        self.lemmatized_tokens = []
         self.tagged_output = {}
 
     @time_usage
@@ -69,6 +76,7 @@ class KnowledgeBasedAnalyzer:
                          subject=False,
                          action=False,
                          color=False,
+                         material=False,
                          math_comparisons=False
                          ):
         self.text = text
@@ -76,7 +84,8 @@ class KnowledgeBasedAnalyzer:
             .tokenize() \
             .tag_pos() \
             .lemmatize() \
-            .tag_universal(person, date, number, currency, subject, action, color, math_comparisons)
+            .tag_universal(person, date, number, currency, subject, action,
+                           color, material, math_comparisons)
         self.tagged_output['INPUT_TEXT'] = self.text
         return self.tagged_output
 
@@ -109,11 +118,8 @@ class KnowledgeBasedAnalyzer:
 
     @time_usage
     def lemmatize(self):
-        '''
         self.lemmatized_tokens = [self.lemmatizer.lemmatize(token[0], pos=self.__find_tag_letter(token[1])) for token in
                                   self.pos_tagged_tokens]
-        '''
-        self.lemmatized_tokens = []
         return self
 
     @time_usage
@@ -129,16 +135,8 @@ class KnowledgeBasedAnalyzer:
         return letter
 
     @time_usage
-    def tag_universal(self,
-                      person,
-                      date,
-                      number,
-                      currency,
-                      subject,
-                      action,
-                      color,
-                      math_comparisons
-                      ):
+    def tag_universal(self, person, date, number, currency, subject, action,
+                      color, material, math_comparisons):
         from core.understander.generic.analyzer.knowledge.tagger.custom_tagger import CustomTagger
         tagger = CustomTagger(text=self.text,
                               lemmatized_tokens=self.lemmatized_tokens,
@@ -146,11 +144,13 @@ class KnowledgeBasedAnalyzer:
                               pos_tagged_tokens = self.pos_tagged_tokens,
                               spacy_ner=self.ner_spacy,
                               currency_extract=self.currency_extract,
-                              color_extract=self.color_extract)
+                              color_extract=self.color_extract,
+                              material_set=self.material_set)
         # TODO: FIXME as the verb and person names got mixed up
         # do not change order
         # Fix it later properly
         if color: self.tagged_output['COLOR'] = tagger.tag_color()
+        if material: self.tagged_output['MATERIAL'] = tagger.tag_material()
         if person: self.tagged_output['PERSON'] = tagger.tag_person()
         #self.tagged_output['TYPE'] = tagger.tag_type()
         # removing date tagging as spacy loading takes a lot of time

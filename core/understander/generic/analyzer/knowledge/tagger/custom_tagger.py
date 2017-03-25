@@ -1,14 +1,9 @@
 from core.commons.util import *
 
 class CustomTagger:
-    def __init__(self,
-                 text,
-                 unlemmatized_tokens,
-                 lemmatized_tokens,
-                 pos_tagged_tokens,
-                 spacy_ner,
-                 color_extract,
-                 currency_extract):
+    def __init__(self, text, unlemmatized_tokens, lemmatized_tokens,
+                 pos_tagged_tokens, spacy_ner, color_extract, currency_extract,
+                 material_set):
         self.text = text
         self.lemmatized_tokens = lemmatized_tokens
         self.unlemmatized_tokens = unlemmatized_tokens
@@ -17,6 +12,7 @@ class CustomTagger:
         dirname, _ = os.path.split(os.path.abspath(__file__))
 
         self.color_extract = color_extract
+        self.material_set = material_set
         self.currency_extract = currency_extract
 
 
@@ -28,6 +24,7 @@ class CustomTagger:
         self.nums = []
         self.currencies = []
         self.colors = []
+        self.materials = []
         self.math_comparisons = []
 
     @time_usage
@@ -123,6 +120,19 @@ class CustomTagger:
                 colors.append(segment)
         self.colors = colors
         return colors
+
+    @time_usage
+    def tag_material(self):
+        for token in self.lemmatized_tokens:
+            #FIXME: hack to complement the lemmatizer in corner cases
+            # eg. wooden -> wood
+            lemmatized_token = set(filter((lambda x: x.lower() in token.lower()),
+                                      self.material_set))
+            # filter returns an iterator so convert into set
+            # if its not empty, fetch item
+            if lemmatized_token:
+                self.materials.append(lemmatized_token.pop())
+        return self.materials
 
     @time_usage
     def tag_subject(self, tokens = None):
