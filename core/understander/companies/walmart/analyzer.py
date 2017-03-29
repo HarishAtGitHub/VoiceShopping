@@ -1,9 +1,33 @@
 from core.understander.business.shopping.analyzer import Analyzer as ShoppingAnalyzer
 from properties.core.understander.business.shopping import json_properties as shopping_json_prop
 
+MATERIALS = [
+    "Fabric",
+    "Leather",
+    "Wood",
+    "Microfiber",
+    "Plastic",
+    "Faux Leather",
+    "Metal",
+    "Vinyl",
+    "Steel",
+    "Polyester",
+    "Rubber",
+    "MESH",
+    "Upholstered",
+    "Foam",
+    "Polyster",
+    "100% Polyester",
+    "Resin",
+    "Bonded Leather",
+    "Polycarbonate",
+    "Resin Wicker"
+]
+
 class Analyzer:
     def __init__(self):
         self.analyzer = ShoppingAnalyzer()
+        self.analyzer.add_additional_materials(MATERIALS)
 
     def analyze(self, text):
         self.text = text.lower().strip()

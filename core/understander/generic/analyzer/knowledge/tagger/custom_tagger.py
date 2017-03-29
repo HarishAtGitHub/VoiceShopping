@@ -1,14 +1,9 @@
 from core.commons.util import *
 
 class CustomTagger:
-    def __init__(self,
-                 text,
-                 unlemmatized_tokens,
-                 lemmatized_tokens,
-                 pos_tagged_tokens,
-                 spacy_ner,
-                 color_extract,
-                 currency_extract):
+    def __init__(self, text, unlemmatized_tokens, lemmatized_tokens,
+                 pos_tagged_tokens, spacy_ner, color_extract, currency_extract,
+                 material_set):
         self.text = text
         self.lemmatized_tokens = lemmatized_tokens
         self.unlemmatized_tokens = unlemmatized_tokens
@@ -17,6 +12,8 @@ class CustomTagger:
         dirname, _ = os.path.split(os.path.abspath(__file__))
 
         self.color_extract = color_extract
+        self.material_set = material_set
+        self.material_map = {m.lower(): m for m in self.material_set}
         self.currency_extract = currency_extract
 
 
@@ -28,6 +25,7 @@ class CustomTagger:
         self.nums = []
         self.currencies = []
         self.colors = []
+        self.materials = []
         self.math_comparisons = []
 
     @time_usage
@@ -125,6 +123,27 @@ class CustomTagger:
         return colors
 
     @time_usage
+    def tag_material(self):
+        # assumption : materials can span 1 or 2 words together
+        token_list = self.lemmatized_tokens[:]
+        # len 2
+        for i in zip(token_list,
+                     token_list[1:]):
+            segment = ' '.join(list(i)).lower()
+            if segment in self.material_map:
+                self.materials.append(self.material_map[segment])
+                # remove the processed tokens to guard against 'resin' being
+                # added to materials if 'resin wicker' is already found
+                for token in i:
+                    token_list.remove(token)
+        # len 1
+        for token in token_list:
+            token_lc = token.lower()
+            if token_lc in self.material_map and token_lc not in self.materials:
+                self.materials.append(self.material_map[token_lc])
+        return self.materials
+
+    @time_usage
     def tag_subject(self, tokens = None):
         # fix to have persons at different locations
         #ner_tagged_tokens = self.stanford_ner.tag(tokens if tokens else self.tokens)
@@ -141,6 +160,7 @@ class CustomTagger:
                                                                   'persons',
                                                                   'dates',
                                                                   'nums',
+                                                                  'materials',
                                                                   'colors'])):
                 if nouns:
                     if start:
@@ -216,7 +236,7 @@ class CustomTagger:
     def is_segment_already_tagged(self, segment, tags):
         for tag in tags:
             for item in self.__dict__[tag]:
-                if segment in item.split(' '):
+                if segment.lower() in item.lower().split(' '):
                     return True
 
     def tag_type(self):

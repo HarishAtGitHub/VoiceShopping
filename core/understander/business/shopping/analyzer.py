@@ -10,6 +10,9 @@ class Analyzer:
         from core.understander.generic.analyzer.knowledge.knowledge_based_analyzer import KnowledgeBasedAnalyzer
         self.knowledge_analyzer = KnowledgeBasedAnalyzer()
 
+    def add_additional_materials(self, materials = []):
+        self.knowledge_analyzer.add_additional_materials(materials)
+
     def analyze(self, text):
         self.text = text.lower().strip()
         self.text = re.sub('\s\s+', ' ', self.text)
@@ -157,7 +160,8 @@ class Analyzer:
             text,
             number=True,
             currency=True,
-            color=True)
+            color=True,
+            material=True)
         op = []
 
         # check color
@@ -165,6 +169,13 @@ class Analyzer:
             color ={shopping_json_prop.ATTR_KEY : shopping_json_prop.ATTR_COLOR}
             color[shopping_json_prop.ATTR_VALUE] = analyzed_form['COLOR']
             op.append(color)
+
+        # check and set material
+        material = analyzed_form['MATERIAL']
+        if material:
+            material_attr = {shopping_json_prop.ATTR_KEY : shopping_json_prop.ATTR_MATERIAL}
+            material_attr[shopping_json_prop.ATTR_VALUE] = material
+            op.append(material_attr)
 
         # check money
         if analyzed_form['NUMBER'] and analyzed_form['CURRENCY']:
@@ -221,6 +232,7 @@ class Analyzer:
             analyzed_form = self.knowledge_analyzer.analyze_segments(
                 current,
                 subject=True,
+                material=True,
                 color=True)
             if analyzed_form['SUBJECT']:
                 self.start_index = 2 + index + 1
