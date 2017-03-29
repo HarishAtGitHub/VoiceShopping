@@ -1,14 +1,33 @@
-from constants import ROOT_DIR
-from core.commons.company_data import DataStore
 from core.understander.business.shopping.analyzer import Analyzer as ShoppingAnalyzer
 from properties.core.understander.business.shopping import json_properties as shopping_json_prop
-from os.path import dirname, join
+
+MATERIALS = [
+    "Fabric",
+    "Leather",
+    "Wood",
+    "Microfiber",
+    "Plastic",
+    "Faux Leather",
+    "Metal",
+    "Vinyl",
+    "Steel",
+    "Polyester",
+    "Rubber",
+    "MESH",
+    "Upholstered",
+    "Foam",
+    "Polyster",
+    "100% Polyester",
+    "Resin",
+    "Bonded Leather",
+    "Polycarbonate",
+    "Resin Wicker"
+]
 
 class Analyzer:
     def __init__(self):
-        materials_file = join(ROOT_DIR, 'data', 'materials', 'walmart_options')
-        data = DataStore(materials_file)
-        self.analyzer = ShoppingAnalyzer(data)
+        self.analyzer = ShoppingAnalyzer()
+        self.analyzer.add_additional_materials(MATERIALS)
 
     def analyze(self, text):
         self.text = text.lower().strip()

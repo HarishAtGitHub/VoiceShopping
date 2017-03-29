@@ -13,6 +13,7 @@ class CustomTagger:
 
         self.color_extract = color_extract
         self.material_set = material_set
+        self.material_map = {m.lower(): m for m in self.material_set}
         self.currency_extract = currency_extract
 
 
@@ -123,15 +124,23 @@ class CustomTagger:
 
     @time_usage
     def tag_material(self):
-        for token in self.lemmatized_tokens:
-            #FIXME: hack to complement the lemmatizer in corner cases
-            # eg. wooden -> wood
-            lemmatized_token = set(filter((lambda x: x.lower() in token.lower()),
-                                      self.material_set))
-            # filter returns an iterator so convert into set
-            # if its not empty, fetch item
-            if lemmatized_token:
-                self.materials.append(lemmatized_token.pop())
+        # assumption : materials can span 1 or 2 words together
+        token_list = self.lemmatized_tokens[:]
+        # len 2
+        for i in zip(token_list,
+                     token_list[1:]):
+            segment = ' '.join(list(i)).lower()
+            if segment in self.material_map:
+                self.materials.append(self.material_map[segment])
+                # remove the processed tokens to guard against 'resin' being
+                # added to materials if 'resin wicker' is already found
+                for token in i:
+                    token_list.remove(token)
+        # len 1
+        for token in token_list:
+            token_lc = token.lower()
+            if token_lc in self.material_map and token_lc not in self.materials:
+                self.materials.append(self.material_map[token_lc])
         return self.materials
 
     @time_usage
@@ -151,6 +160,7 @@ class CustomTagger:
                                                                   'persons',
                                                                   'dates',
                                                                   'nums',
+                                                                  'materials',
                                                                   'colors'])):
                 if nouns:
                     if start:
@@ -226,7 +236,7 @@ class CustomTagger:
     def is_segment_already_tagged(self, segment, tags):
         for tag in tags:
             for item in self.__dict__[tag]:
-                if segment in item.split(' '):
+                if segment.lower() in item.lower().split(' '):
                     return True
 
     def tag_type(self):

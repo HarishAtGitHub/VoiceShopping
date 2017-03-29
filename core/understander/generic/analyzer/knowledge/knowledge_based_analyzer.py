@@ -3,7 +3,7 @@ import re
 
 class KnowledgeBasedAnalyzer:
     @time_usage
-    def __init__(self, data=None):
+    def __init__(self):
         import os
         dirname, filename = os.path.split(os.path.abspath(__file__))
 
@@ -27,14 +27,20 @@ class KnowledgeBasedAnalyzer:
             import pickle
             self.color_extract = pickle.load(storage_file)
 
-        # set materials
-        try:
-            self.material_set = data.material_set
-        except:
-            self.material_set = set()
+        # set common materials
+        self.material_set = set()
+
+        # complement lemmatizer at corner cases
+        self.complementary_lemmatizer = {'wooden': 'wood'}
 
         self.lemmatized_tokens = []
         self.tagged_output = {}
+
+    def add_additional_materials(self, materials = []):
+        # added an empty list in signature to indicate the param type.
+        # union list with existing set of common materials to allow
+        # for addition of company specific materials
+        self.material_set |= set(materials)
 
     @time_usage
     def analyze(self,
@@ -120,6 +126,11 @@ class KnowledgeBasedAnalyzer:
     def lemmatize(self):
         self.lemmatized_tokens = [self.lemmatizer.lemmatize(token[0], pos=self.__find_tag_letter(token[1])) for token in
                                   self.pos_tagged_tokens]
+        # apply the complementary lemmatizer to address corner cases
+        for token in self.lemmatized_tokens:
+            lemmatized_token = self.complementary_lemmatizer.get(token)
+            if lemmatized_token:
+                self.lemmatized_tokens[self.lemmatized_tokens.index(token)] = lemmatized_token
         return self
 
     @time_usage

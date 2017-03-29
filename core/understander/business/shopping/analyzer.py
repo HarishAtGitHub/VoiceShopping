@@ -4,11 +4,14 @@ import re
 
 class Analyzer:
     # instantiate analyzer only once and reuse it or else each time it takes time
-    def __init__(self, data=None):
+    def __init__(self):
         from core.understander.generic.analyzer.grammar.grammar_based_analyzer import GrammarBasedAnalyzer
         self.grammar_analyzer = GrammarBasedAnalyzer()
         from core.understander.generic.analyzer.knowledge.knowledge_based_analyzer import KnowledgeBasedAnalyzer
-        self.knowledge_analyzer = KnowledgeBasedAnalyzer(data)
+        self.knowledge_analyzer = KnowledgeBasedAnalyzer()
+
+    def add_additional_materials(self, materials = []):
+        self.knowledge_analyzer.add_additional_materials(materials)
 
     def analyze(self, text):
         self.text = text.lower().strip()
@@ -170,9 +173,9 @@ class Analyzer:
         # check and set material
         material = analyzed_form['MATERIAL']
         if material:
-            color ={shopping_json_prop.ATTR_KEY : shopping_json_prop.ATTR_MATERIAL}
-            color[shopping_json_prop.ATTR_VALUE] = material
-            op.append(color)
+            material_attr = {shopping_json_prop.ATTR_KEY : shopping_json_prop.ATTR_MATERIAL}
+            material_attr[shopping_json_prop.ATTR_VALUE] = material
+            op.append(material_attr)
 
         # check money
         if analyzed_form['NUMBER'] and analyzed_form['CURRENCY']:
@@ -229,6 +232,7 @@ class Analyzer:
             analyzed_form = self.knowledge_analyzer.analyze_segments(
                 current,
                 subject=True,
+                material=True,
                 color=True)
             if analyzed_form['SUBJECT']:
                 self.start_index = 2 + index + 1
