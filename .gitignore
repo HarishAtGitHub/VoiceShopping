@@ -1,5 +1,6 @@
-# custom
+# customi
 sentance-understanding/core/fun/
+*.swp
 
 # Byte-compiled / optimized / DLL files
 *.pyc
