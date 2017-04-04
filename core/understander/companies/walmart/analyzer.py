@@ -46,7 +46,9 @@ class Analyzer:
         return self.analyzed_form
 
     def get_attributes(self):
-        self.get_shipping_details()
+        shipping_details = self.get_shipping_details()
+        if shipping_details:
+            self.analyzed_form[shopping_json_prop.MAIN_ATTRIBUTES_KEY].append(shipping_details)
 
     def get_shipping_details(self):
         shipping_options = ['two day shipping', 'free pickup today',
