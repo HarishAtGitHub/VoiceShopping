@@ -1,0 +1,10 @@
+[
+ {
+  "url" : "http://localhost:5000/ml/api/v1.0/shopping/understander/walmart",
+  "httpMethod" : "POST",
+  "requestBody" : {
+      "text" : "get me black faux leather chairs that cost under 300 usd rating greater than equal to 4 preference of five length of 5 width less than 16"
+    },
+  "responseBody" : "{u'attributes': [{u'modifiers': {u'CURRENCY': u'usd', u'relation': [u'<']}, u'value': 300, u'key': u'cost'}, {u'modifiers': {u'relation': [u'<']}, u'value': {u'number': 300, u'unit': u'usd'}, u'key': u'money'}, {u'modifiers': {u'relation': [u'>', u'=']}, u'value': 4, u'key': u'rating'}, {u'modifiers': {}, u'value': 5, u'key': u'preference'}, {u'modifiers': {}, u'value': 5, u'key': u'length'}, {u'modifiers': {u'relation': [u'<']}, u'value': 16, u'key': u'width'}, {u'value': [u'black'], u'key': u'color'}, {u'value': [u'Faux Leather'], u'key': u'material'}, {u'modifiers': {u'relation': [u'<']}, u'value': {u'number': 300, u'unit': u'usd'}, u'key': u'money'}, {u'modifiers': {}, u'value': [], u'key': u'shipping'}], u'product': [u'chairs']}"
+ }
+]

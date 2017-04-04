@@ -1,6 +1,8 @@
 from core.commons.text2num import text2num, NumberException
 from properties.core.understander.business.shopping import json_properties as shopping_json_prop
 import re
+from properties.core.understander.business.shopping import messages
+from core.commons.exceptions import UnableToUnderstandException
 
 class Analyzer:
     # instantiate analyzer only once and reuse it or else each time it takes time
@@ -27,7 +29,7 @@ class Analyzer:
         if product:
             op[shopping_json_prop.MAIN_KEY_NAME] = product
         else:
-            return 'Sorry, We were unable to figure the product you are searching for'
+            raise UnableToUnderstandException(messages.UNABLE_TO_UNDERSTAND)
 
         # get product attributes
         op[shopping_json_prop.MAIN_ATTRIBUTES_KEY] = []

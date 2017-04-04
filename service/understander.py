@@ -4,6 +4,8 @@ from flask import request
 
 from core.understander.business.shopping.analyzer import Analyzer as ShoppingAnalyzer
 from core.understander.companies.walmart.analyzer import Analyzer as WalmartAnalyzer
+from core.commons.exceptions import UnableToUnderstandException
+import properties.core.understander.business.shopping.messages as msg
 
 shopping_analyzer = ShoppingAnalyzer()
 walmart_shopping_analyzer = WalmartAnalyzer()
@@ -30,13 +32,24 @@ def understand():
 @app.route(API_PATH + API_VERSION + '/shopping/understander', methods=['POST'])
 def understand_shopping():
     text = request.json['text']
-    analyzed_form = shopping_analyzer.analyze(text)
+    try:
+        analyzed_form = shopping_analyzer.analyze(text)
+    except UnableToUnderstandException as utue:
+        return jsonify({'text' : str(utue)}), 400
+    except:
+        return jsonify({'text': msg.UNABLE_TO_UNDERSTAND}), 503
     return jsonify(analyzed_form)
 
 @app.route(API_PATH + API_VERSION + '/shopping/understander/walmart', methods=['POST'])
 def understand_shopping_walmart():
     text = request.json['text']
-    analyzed_form = walmart_shopping_analyzer.analyze(text)
+    try:
+        analyzed_form = walmart_shopping_analyzer.analyze(text)
+    except UnableToUnderstandException as utue:
+        return jsonify({'text' : str(utue)}), 400
+    except:
+        return jsonify({'text': msg.UNABLE_TO_UNDERSTAND}), 503
+
     return jsonify(analyzed_form)
 
 @app.route('/')

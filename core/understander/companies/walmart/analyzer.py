@@ -1,5 +1,7 @@
 from core.understander.business.shopping.analyzer import Analyzer as ShoppingAnalyzer
 from properties.core.understander.business.shopping import json_properties as shopping_json_prop
+from properties.core.understander.business.shopping import messages
+from core.commons.exceptions import UnableToUnderstandException
 
 MATERIALS = [
     "Fabric",
@@ -31,7 +33,13 @@ class Analyzer:
 
     def analyze(self, text):
         self.text = text.lower().strip()
-        self.analyzed_form =  self.analyzer.analyze(text)
+        try:
+            self.analyzed_form =  self.analyzer.analyze(text)
+        except UnableToUnderstandException as utue:
+            raise utue
+        except:
+            raise UnableToUnderstandException(messages.UNABLE_TO_UNDERSTAND)
+
         if self.analyzed_form and self.analyzed_form[shopping_json_prop.MAIN_KEY_NAME]:
             self.get_attributes()
 
