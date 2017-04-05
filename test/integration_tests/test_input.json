@@ -31,5 +31,13 @@
       "text" : "show me wooden chairs that have width 16 and height 12"
     },
     "responseBody" : "{ 'attributes': [ { 'key': 'width', 'modifiers': {}, 'value': 16 }, { 'key': 'height', 'modifiers': {}, 'value': 12 }, { 'key': 'material', 'value': [ 'Wood' ] } ], 'product': [ 'chairs' ] }"
+  },
+   {
+    "url" : "http://localhost:5000/ml/api/v1.0/shopping/understander/walmart",
+  "httpMethod" : "POST",
+  "requestBody" : {
+      "text" : "get me brown leather chairs that cost under 300 usd rating and having two day shipping"
+    },
+    "responseBody" : "{ 'attributes': [ { 'key': 'cost', 'modifiers': { 'CURRENCY': 'usd', 'relation': [ '<' ] }, 'value': 300 }, { 'key': 'money', 'modifiers': { 'relation': [ '<' ] }, 'value': { 'number': 300, 'unit': 'usd' } }, { 'key': 'rating', 'modifiers': {}, 'value': 2 }, { 'key': 'color', 'value': [ 'brown' ] }, { 'key': 'material', 'value': [ 'Leather' ] }, { 'key': 'shipping', 'modifiers': {}, 'value': [ 'two day shipping' ] } ], 'product': [ 'chairs' ] }"
   }
 ]
