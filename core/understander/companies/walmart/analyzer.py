@@ -61,4 +61,7 @@ class Analyzer:
         for shipping_option in shipping_options:
             if shipping_option in self.text:
                 res[shopping_json_prop.ATTR_VALUE].append(shipping_option)
-        self.analyzed_form[shopping_json_prop.MAIN_ATTRIBUTES_KEY].append(res)
+        if res[shopping_json_prop.ATTR_VALUE]:
+            return res
+        else:
+            return None

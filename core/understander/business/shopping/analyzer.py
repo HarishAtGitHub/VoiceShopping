@@ -57,9 +57,39 @@ class Analyzer:
             else:
                 break
         # get global attributes to handle cases like get green  chairs
-        op[shopping_json_prop.MAIN_ATTRIBUTES_KEY] = op[shopping_json_prop.MAIN_ATTRIBUTES_KEY] + self.get_universal_attributes(text)
+        universal_attrib = self.get_universal_attributes(text)
+        if universal_attrib:
+            op[shopping_json_prop.MAIN_ATTRIBUTES_KEY] = op[shopping_json_prop.MAIN_ATTRIBUTES_KEY] + universal_attrib
+
+        op = self.process_output(op)
         # return product details
         return op
+
+    def process_output(self, output):
+        if output[shopping_json_prop.MAIN_ATTRIBUTES_KEY]:
+            output[shopping_json_prop.MAIN_ATTRIBUTES_KEY] = self.remove_duplicate_attributes(
+                output[shopping_json_prop.MAIN_ATTRIBUTES_KEY])
+        return output
+
+    def remove_duplicate_attributes(self, attributes):
+        # TODO: devise a better way to remove duplicate attributes
+        money_seen = False
+        color_seen = False
+        properties = []
+        for attrib in attributes:
+            if attrib['key'] == 'money':
+                if not money_seen:
+                    properties.append(attrib)
+                    money_seen = True
+                continue
+            elif attrib['key'] == 'color':
+                if not color_seen:
+                    properties.append(attrib)
+                    color_seen = True
+                continue
+            else:
+                properties.append(attrib)
+        return properties
 
     def get_key_value_pair(self, text):
         analyzed_form = self.knowledge_analyzer.analyze_segments(
@@ -71,7 +101,15 @@ class Analyzer:
             action=True,
             math_comparisons=True)
 
-        if len(analyzed_form['SUBJECT']) > 1 or self.running_index == len(self.tokens) - 1:
+        # 3 cases
+        # 1. more than one subject found so it is time to map the first subject to value
+        # 2. sentence has ended
+        #       a) one subject with one value so try to get value
+        #       b) one subject with no value so just get the meaning
+        #       b) no subject case so just get meaning
+        # 3. else
+        if len(analyzed_form['SUBJECT']) > 1:
+
             op = []
 
             res = {}
@@ -96,28 +134,67 @@ class Analyzer:
                 analyzed_form = self.get_analyzed_form(actual_segment)
 
             # analyze segment starting from subject till the next subject
-            if analyzed_form['NUMBER']:
-                res[shopping_json_prop.ATTR_KEY] = analyzed_form['SUBJECT'][0]
-                try:
-                    res[shopping_json_prop.ATTR_VALUE] = int(text2num(analyzed_form['NUMBER'][0]))
-                except NumberException as ne:
-                    try:
-                        res[shopping_json_prop.ATTR_VALUE] = int(analyzed_form['NUMBER'][0])
-                    except ValueError as ve:
-                        res[shopping_json_prop.ATTR_VALUE] = analyzed_form['NUMBER'][0]
-            if analyzed_form['CURRENCY']:
-                res[shopping_json_prop.ATTR_MODIFIER]['CURRENCY'] = analyzed_form['CURRENCY'][0]
-            if analyzed_form['RELATION']:
-                res[shopping_json_prop.ATTR_MODIFIER][shopping_json_prop.ATTR_MODIFIER_RELATION] = analyzed_form['RELATION']
-            if res[shopping_json_prop.ATTR_KEY]:
+            res = self.get_value(analyzed_form)
+            if res and res[shopping_json_prop.ATTR_KEY]:
                 op.append(res)
 
             if op:
                 return op, analyzed_form
             else:
                 return None, analyzed_form
+        elif  self.running_index == len(self.tokens) - 1:
+            if len(analyzed_form['SUBJECT']) == 1:
+                op = []
+                res = {}
+                res[shopping_json_prop.ATTR_MODIFIER] = {}
+                res[shopping_json_prop.ATTR_KEY] = ''
+                res[shopping_json_prop.ATTR_VALUE] = ''
+                res[shopping_json_prop.ATTR_KEY] = analyzed_form['SUBJECT'][0]
+                res = self.get_value(analyzed_form)
+                if res and res[shopping_json_prop.ATTR_KEY]:
+                    if res[shopping_json_prop.ATTR_VALUE] :
+                        op.append(res)
+                    else:
+                        meanings = self.get_possible_meaning(text, analyzed_form)
+                        if meanings:
+                            op.extend(meanings)
+                if op:
+                    return op, analyzed_form
+                else:
+                    return None, analyzed_form
+
+            else: #means no subject so just get possible meaning
+                op = []
+                meanings = self.get_possible_meaning(text, analyzed_form)
+                if meanings:
+                    op.extend(meanings)
+                if op:
+                    return op, analyzed_form
+                else:
+                    return None, analyzed_form
         else:
             return None, analyzed_form
+
+    def get_value(self, analyzed_form):
+        res = {}
+        res[shopping_json_prop.ATTR_MODIFIER] = {}
+        res[shopping_json_prop.ATTR_KEY] = ''
+        res[shopping_json_prop.ATTR_VALUE] = ''
+        if analyzed_form['NUMBER']:
+            res[shopping_json_prop.ATTR_KEY] = analyzed_form['SUBJECT'][0]
+            try:
+                res[shopping_json_prop.ATTR_VALUE] = int(text2num(analyzed_form['NUMBER'][0]))
+            except NumberException as ne:
+                try:
+                    res[shopping_json_prop.ATTR_VALUE] = int(analyzed_form['NUMBER'][0])
+                except ValueError as ve:
+                    res[shopping_json_prop.ATTR_VALUE] = analyzed_form['NUMBER'][0]
+        if analyzed_form['CURRENCY']:
+            res[shopping_json_prop.ATTR_MODIFIER]['CURRENCY'] = analyzed_form['CURRENCY'][0]
+        if analyzed_form['RELATION']:
+            res[shopping_json_prop.ATTR_MODIFIER][shopping_json_prop.ATTR_MODIFIER_RELATION] = analyzed_form['RELATION']
+
+        return res
 
     def get_analyzed_form(self, text):
         return  self.knowledge_analyzer.analyze_segments(

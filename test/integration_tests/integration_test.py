@@ -22,6 +22,10 @@ def run_api_test(url, httpMethod, data, expected_output):
         result = dict_compare(output, expected_output)
         if not result:
             print("API URL {} Test failed due to mismatch in expected output".format(url))
+            print('actual')
+            print(output)
+            print('expected')
+            print(expected_output)
         else:
             print("API URL {} Test passed".format(url))
     else:
