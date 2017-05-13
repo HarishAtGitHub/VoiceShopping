@@ -13,20 +13,24 @@ known_facets = {
 from nltk.corpus import wordnet as w
 import itertools
 
-def get_word_cloud(word_sense):
+'''def get_word_cloud(word_sense):
     word_sense = w.synset(word_sense)
     syns = word_sense.lemma_names()
     hypernyms = list(itertools.chain(*[h.lemma_names() for h in word_sense.hypernyms()]))
     hyponyms = list(itertools.chain(*[h.lemma_names() for h in word_sense.hyponyms()]))
     word_cloud = syns + hyponyms + hypernyms
     return word_cloud
+'''
 
 def get_facet_meanings():
+    from core.understander.companies.walmart.normalization.word_cloud import WordCloud
     facets_meanings = {}
     for facet, word_senses in known_facets.items():
         word_cloud = []
         for word_sense in word_senses:
-            word_cloud = word_cloud + get_word_cloud(word_sense)
+            # be careful while doing something ins wordcloud because this is a standalone file
+            # and it is using a module from the project
+            word_cloud = word_cloud + WordCloud.get_word_cloud_from_word_sense(word_sense)
 
         facets_meanings[facet] = word_cloud
     return facets_meanings
