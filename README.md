@@ -22,3 +22,12 @@ sudo python3
 >>> nltk.download('punkt')
 
 python3 service/understander.py
+
+
+######### developers ####################3
+
+How to test ?
+=============
+
+sudo apt install python-nose3
+sh test.sh

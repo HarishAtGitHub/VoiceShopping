@@ -1,3 +1,4 @@
+'''
 from core.understander.business.shopping.analyzer import Analyzer
 analyzer = Analyzer()
 
@@ -6,4 +7,4 @@ import time
 s = time.time()
 print(analyzer.analyze(question))
 print('elapsed time %f' % (time.time() - s))
-
+'''
