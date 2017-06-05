@@ -7,6 +7,7 @@ from core.understander.companies.walmart.analyzer import Analyzer as WalmartAnal
 from core.understander.companies.walmart.searcher import Searcher as WalmartSearcher
 from core.commons.exceptions import UnableToUnderstandException
 import properties.core.understander.business.shopping.messages as msg
+from core.understander.companies.walmart.api.facet import get_facets
 
 shopping_analyzer = ShoppingAnalyzer()
 walmart_shopping_analyzer = WalmartAnalyzer()
@@ -19,6 +20,9 @@ app = Flask(__name__)
 API_PATH = '/ml/api/'
 API_VERSION = 'v1.0'
 API_PREFIX = API_PATH + API_VERSION
+
+WALMART_API_PATH = '/walmart/api/'
+WALMART_API_PREFIX = WALMART_API_PATH + API_VERSION
 
 @app.route(API_PATH + API_VERSION + '/understander', methods=['GET'])
 def get_status():
@@ -69,6 +73,21 @@ def shopping_search_walmart():
         return jsonify(search_results)
     else:
         return jsonify({'text': msg.UNABLE_TO_UNDERSTAND}), 503
+
+@app.route(WALMART_API_PREFIX + '/facets', methods=['POST'])
+def walmart_get_facets():
+    try:
+        try:
+            product = request.json['product']
+        except KeyError as ke:
+            return jsonify({'text': msg.MANDATORY_PRODUCT_FIELD}), 400
+        facets = get_facets(product)
+        if facets:
+            return jsonify(facets)
+        else:
+            return jsonify({'text': msg.NO_FACETS_FOUND}), 404
+    except:
+        return jsonify({'text': msg.FINAL_EXCEPTION}), 503
 
 @app.route('/')
 def root():

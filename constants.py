@@ -7,3 +7,4 @@ QUERY_STRING_SEPARATOR = "?"
 API_KEY_PARAM = "apiKey=vjcgatgh6wfxzd7wbaqj5v7a"
 WALMART_SEARCH_URL = ''.join([WALMART_API_ENDPOINT, WALMART_SEARCH_API_PATH,
                               QUERY_STRING_SEPARATOR, API_KEY_PARAM])
+WALMART_UI_URL = 'https://www.walmart.com/search/'
