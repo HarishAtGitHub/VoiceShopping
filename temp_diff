@@ -1,0 +1,45 @@
+diff --git a/core/understander/business/shopping/analyzer.py b/core/understander/business/shopping/analyzer.py
+index 917d93b..d182a51 100644
+--- a/core/understander/business/shopping/analyzer.py
++++ b/core/understander/business/shopping/analyzer.py
+@@ -94,7 +94,7 @@ class Analyzer:
+     def get_key_value_pair(self, text):
+         analyzed_form = self.knowledge_analyzer.analyze_segments(
+             text,
+-            person=True,
++            person=False,
+             number=True,
+             currency=True,
+             subject=True,
+@@ -199,7 +199,7 @@ class Analyzer:
+     def get_analyzed_form(self, text):
+         return  self.knowledge_analyzer.analyze_segments(
+             text,
+-            person=True,
++            person=False,
+             number=True,
+             currency=True,
+             subject=True,
+diff --git a/core/understander/generic/analyzer/knowledge/knowledge_based_analyzer.py b/core/understander/generic/analyzer/knowledge/knowledge_based_analyzer.py
+index 4ed0733..1e6410b 100644
+--- a/core/understander/generic/analyzer/knowledge/knowledge_based_analyzer.py
++++ b/core/understander/generic/analyzer/knowledge/knowledge_based_analyzer.py
+@@ -8,8 +8,9 @@ class KnowledgeBasedAnalyzer:
+         dirname, filename = os.path.split(os.path.abspath(__file__))
+ 
+         # spacy ner tagger
+-        import spacy
+-        self.ner_spacy = spacy.load('en')
++        #import spacy
++        #self.ner_spacy = spacy.load('en')
++        self.ner_spacy = ''
+ 
+         # wordnet lemmatizer
+         from nltk.stem.wordnet import WordNetLemmatizer
+@@ -172,4 +173,4 @@ class KnowledgeBasedAnalyzer:
+         if subject: self.tagged_output['SUBJECT'] = tagger.tag_subject()
+         if action: self.tagged_output['ACTION'] = tagger.tag_action()
+         if math_comparisons: self.tagged_output['RELATION'] = tagger.tag_math_inequality()
+-        return self
+\ No newline at end of file
++        return self
