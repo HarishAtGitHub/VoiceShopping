@@ -31,19 +31,27 @@ class Analyzer:
         self.analyzer = ShoppingAnalyzer()
         self.analyzer.add_additional_materials(MATERIALS)
 
-    def analyze(self, text):
+    def analyze(self, text, knowledge=False):
         self.text = text.lower().strip()
-        try:
-            self.analyzed_form =  self.analyzer.analyze(text)
-        except UnableToUnderstandException as utue:
-            raise utue
-        except:
-            raise UnableToUnderstandException(messages.UNABLE_TO_UNDERSTAND)
+        if not knowledge:
+            try:
+                self.analyzed_form = self.analyzer.analyze(text)
+            except UnableToUnderstandException as utue:
+                raise utue
+            except:
+                raise UnableToUnderstandException(messages.UNABLE_TO_UNDERSTAND)
 
-        if self.analyzed_form and self.analyzed_form[shopping_json_prop.MAIN_KEY_NAME]:
-            self.get_attributes()
+            if self.analyzed_form and self.analyzed_form[shopping_json_prop.MAIN_KEY_NAME]:
+                self.get_attributes()
 
-        return self.analyzed_form
+            return self.analyzed_form
+        else:
+            product = self.analyzer.get_product(text)
+            if product:
+                from core.understander.companies.walmart.knowledge import get_knowledge
+                return get_knowledge(product[0])
+            else:
+                raise UnableToUnderstandException(messages.UNABLE_TO_UNDERSTAND)
 
     def get_attributes(self):
         shipping_details = self.get_shipping_details()

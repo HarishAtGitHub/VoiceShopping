@@ -50,12 +50,23 @@ def understand_shopping():
 def understand_shopping_walmart():
     text = request.json['text']
     try:
-        analyzed_form = walmart_shopping_analyzer.analyze(text)
+        analyzed_form = walmart_shopping_analyzer.analyze(text, knowledge=False)
     except UnableToUnderstandException as utue:
         return jsonify({'text' : str(utue)}), 400
     except:
         return jsonify({'text': msg.UNABLE_TO_UNDERSTAND}), 503
 
+    return jsonify(analyzed_form)
+
+@app.route(API_PATH + API_VERSION + '/shopping/understander/walmart/knowledgebase', methods=['POST'])
+def understand_shopping_walmart_knowledgebase():
+    text = request.json['text']
+    try:
+        analyzed_form = walmart_shopping_analyzer.analyze(text, knowledge=True)
+    except UnableToUnderstandException as utue:
+        return jsonify({'text' : str(utue)}), 400
+    except:
+        return jsonify({'text': msg.UNABLE_TO_UNDERSTAND}), 503
     return jsonify(analyzed_form)
 
 @app.route(API_PREFIX + '/shopping/search/walmart', methods=['POST'])

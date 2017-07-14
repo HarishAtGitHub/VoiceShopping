@@ -15,6 +15,17 @@ class Analyzer:
     def add_additional_materials(self, materials = []):
         self.knowledge_analyzer.add_additional_materials(materials)
 
+    def get_product(self, text):
+        self.text = text.lower().strip()
+        self.text = re.sub('\s\s+', ' ', self.text)
+
+        self.tokens = self.text.split(' ')
+        product = self.get_main_product()
+        if product:
+            return product
+        else:
+            return None
+
     def analyze(self, text):
         self.text = text.lower().strip()
         self.text = re.sub('\s\s+', ' ', self.text)
